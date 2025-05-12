@@ -1,0 +1,4 @@
+# For database managements
+dplyr
+odbc
+DBI
