@@ -6,3 +6,4 @@ sgRNA_B <- read.csv("Library_B.csv")
 View(sgRNA_data)
 View(sgRNA_A)
 View(sgRNA_B)
+
