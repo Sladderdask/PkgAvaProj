@@ -1,4 +1,7 @@
 # For database managements
-dplyr
-odbc
 DBI
+RSQLite
+
+# For data formatting
+readxl
+readr
