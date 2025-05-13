@@ -4,4 +4,6 @@
 *.Ruserdata
 *.xlsx
 *.csv
+*.db
+*.RDataTmp*
 .Rproj.user
