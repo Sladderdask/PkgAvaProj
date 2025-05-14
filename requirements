@@ -1,6 +1,6 @@
 # For database managements
-DBI
 RSQLite
+DBI # Automatically installed when installing RSQLite
 
 # For data formatting
 readxl
