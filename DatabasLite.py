@@ -17,12 +17,6 @@ CREATE TABLE GeCKO(
   
 );
 
-CREATE TABLE Onehotencoded(
-  Sequence TEXT,
-  Binaryseq INTEGER,
-  FOREIGN KEY (Sequence) REFERENCES GeCKO (Sequence)
-);
-
 """
 
 try:
