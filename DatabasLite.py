@@ -14,6 +14,13 @@ CREATE TABLE GeCKO(
   UID VARCHAR PRIMARY KEY,
   Sequence TEXT,
   FOREIGN KEY (UID) REFERENCES sgRNA_DATA (sgRNAid)
+  
+);
+
+CREATE TABLE Onehotencoded(
+  Sequence TEXT,
+  Binaryseq INTEGER,
+  FOREIGN KEY (Sequence) REFERENCES GeCKO (Sequence)
 );
 
 """
@@ -33,3 +40,4 @@ def define_db():
         cursor.execute(command)
 
 define_db()
+
