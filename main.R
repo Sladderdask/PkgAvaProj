@@ -17,19 +17,20 @@ View(sgRNA_B)
 conn <- dbConnect(SQLite(), dbname = "DatabasLite.db")
 
 # Verify database
-dbListTables(conn)
+dbListTables(conn, "GeCKO")
+dbListFields(conn, "GeCKO")
 dbListFields(conn, "GeCKO")
 
 
 # Adding data to database
 selected_data <- sgRNA_data[, c("sgrna", "LFC", "score")]
-dbWriteTable(conn, "sgRNA_data", selected_data, overwrite = TRUE, column.names=FALSE)
+dbWriteTable(conn, "sgRNA_data", selected_data, overwrite = TRUE)
 
 selected_data <- sgRNA_A[, c("UID", "seq")]
-dbWriteTable(conn, "GeCKO", selected_data, overwrite = TRUE, column.names=FALSE)
+dbWriteTable(conn, "GeCKO", selected_data, overwrite = TRUE)
 
 selected_data <- sgRNA_B[, c("UID", "seq")]
-dbWriteTable(conn, "GeCKO", selected_data, append = TRUE, column.names=FALSE)
+dbWriteTable(conn, "GeCKO", selected_data, append = TRUE)
 
 
 # Peek into database
@@ -40,28 +41,56 @@ tail(dbReadTable(conn, "GeCKO"))
 gecko_df <- dbGetQuery(conn, "SELECT * FROM GeCKO")
 # Take the sequences from the column seq
 sequences <- gecko_df$seq
-# Create dictionary
+# Create dictionary for onehoencoding
 one_hot_map <- c("0001", "0010", "0100", "1000")
 names(one_hot_map) <- c("A", "C", "G", "T")
 
-# Function that creates a binary seqeuence
-dna_to_one_hot <- function(seqs){
-  # Split sequences into characters
-  split_seqs <- strsplit(sequences, "")
-  # Convert each base using the map
-  sapply(split_seqs, function(bases) paste(one_hot_map[bases], collapse = ""))
-}
 
-# Call on the function
-onehotresult <- dna_to_one_hot(sequences)
+# Function that takes in DNA sequences, 
+# split each nucleotide into separate column
+# And translate the nucleotide to binaryform
+splitfunction <- function(seqs) {
+  # Split each sequence into individual characters
+  split_seqs <- strsplit(seqs, "")
+
+  # Number of positions (should be 20)
+  n_pos <- length(split_seqs[[1]])
+  
+  # Preallocate list of columns, vectors made of lists
+  columns <- vector("list", n_pos)
+  
+  # For each position 1:20, extract that base from all sequences and one-hot encode,
+  for (nucleotide in 1:n_pos) {
+    # Go through position i for each row -> function(row)
+    bases_at_i <- sapply(split_seqs, function(row) row[nucleotide])
+    columns[[nucleotide]] <- one_hot_map[bases_at_i]
+  }
+  
+  # Converting list into data frame and combine with name columns
+  df <- as.data.frame(columns, stringsAsFactors = FALSE)
+  colnames(df) <- paste0("nt", 1:n_pos)
+  
+  return(df)
+}
+# Call on the function using the DNA seqeunces in the GaCKO table
+onehotresult <- splitfunction(sequences)
 
 # Add to dataframe gecko_df
-new_dataframe <- cbind(gecko_df, onehotseq=onehotresult)
+new_dataframe <- cbind(gecko_df, onehotresult)
 # Add to datbase table GeCKO
-dbWriteTable(conn, "GeCKO", new_dataframe, overwrite = TRUE, column.names=FALSE)
+dbWriteTable(conn, "GeCKO", new_dataframe, overwrite = TRUE)
 # Verify the update
 gecko_df <- dbGetQuery(conn, "SELECT * FROM GeCKO")
 head(gecko_df)
+
+# Join the two Tables sgRNA_data and GeCKO
+whole_dataframe <- dbGetQuery(conn, 
+                              "SELECT * 
+                            FROM sgRNA_data 
+                            INNER JOIN GeCKO
+                            WHERE sgRNA_data.sgrna=GeCKO.UID")
+
+whole_dataframe
 
 
 
