@@ -14,6 +14,7 @@ CREATE TABLE GeCKO(
   UID VARCHAR PRIMARY KEY,
   Sequence TEXT,
   FOREIGN KEY (UID) REFERENCES sgRNA_DATA (sgRNAid)
+  
 );
 
 """
@@ -33,3 +34,4 @@ def define_db():
         cursor.execute(command)
 
 define_db()
+
