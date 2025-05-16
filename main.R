@@ -17,8 +17,8 @@ View(sgRNA_B)
 conn <- dbConnect(SQLite(), dbname = "DatabasLite.db")
 
 # Verify database
-dbListTables(conn, "GeCKO")
-dbListFields(conn, "GeCKO")
+dbListTables(conn, "sgRNA_data")
+dbListFields(conn, "sgRNA_data")
 dbListFields(conn, "GeCKO")
 
 
@@ -34,7 +34,7 @@ dbWriteTable(conn, "GeCKO", selected_data, append = TRUE)
 
 
 # Peek into database
-head(dbReadTable(conn, "GeCKO"))
+head(dbReadTable(conn, "sgRNA_data"))
 tail(dbReadTable(conn, "GeCKO"))
 
 # Reqrite seqeunces into Binary seqs to one hot encoding
@@ -84,13 +84,20 @@ gecko_df <- dbGetQuery(conn, "SELECT * FROM GeCKO")
 head(gecko_df)
 
 # Join the two Tables sgRNA_data and GeCKO
-whole_dataframe <- dbGetQuery(conn, 
-                              "SELECT * 
-                            FROM sgRNA_data 
-                            INNER JOIN GeCKO
-                            WHERE sgRNA_data.sgrna=GeCKO.UID")
-
-whole_dataframe
+dbGetQuery(conn,
+                "
+                UPDATE sgRNA_data
+                SET LFC_binary = 1
+                WHERE LFC > 0
+                "
+                )
+dbGetQuery(conn,
+                "
+                UPDATE sgRNA_data
+                SET LFC_binary = 0
+                WHERE LFC = 0 OR LFC < 0
+                "
+                )
 
 
 
