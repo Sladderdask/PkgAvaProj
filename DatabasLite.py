@@ -7,7 +7,8 @@ definition = """
 CREATE TABLE IF NOT EXISTS sgRNA_data(
   sgRNAid VARCHAR PRIMARY KEY,
   LFC REAL,
-  score REAL
+  score REAL,
+  LFC_binary INTEGER
 );
 
 CREATE TABLE GeCKO(
