@@ -20,27 +20,33 @@ conn <- dbConnect(SQLite(), dbname = "DatabasLite.db")
 dbListTables(conn, "sgRNA_data")
 dbListFields(conn, "sgRNA_data")
 dbListFields(conn, "GeCKO")
+colnames(sgRNA_data)
 
 
 # Adding data to database
 selected_data <- sgRNA_data[, c("sgrna", "LFC", "score")]
-dbWriteTable(conn, "sgRNA_data", selected_data, overwrite = TRUE)
+colnames(selected_data) <- dbListFields(conn, "sgRNA_data")
+dbWriteTable(conn, "sgRNA_data", selected_data, append = TRUE)
 
 selected_data <- sgRNA_A[, c("UID", "seq")]
-dbWriteTable(conn, "GeCKO", selected_data, overwrite = TRUE)
+colnames(selected_data) <- dbListFields(conn, "GeCKO")
+dbWriteTable(conn, "GeCKO", selected_data, append = TRUE)
 
 selected_data <- sgRNA_B[, c("UID", "seq")]
+colnames(selected_data) <- dbListFields(conn, "GeCKO")
 dbWriteTable(conn, "GeCKO", selected_data, append = TRUE)
 
 
 # Peek into database
 head(dbReadTable(conn, "sgRNA_data"))
+dbListFields(conn, "sgRNA_data")
+head(dbReadTable(conn, "GeCKO"))
 tail(dbReadTable(conn, "GeCKO"))
 
 # Reqrite seqeunces into Binary seqs to one hot encoding
 gecko_df <- dbGetQuery(conn, "SELECT * FROM GeCKO")
 # Take the sequences from the column seq
-sequences <- gecko_df$seq
+sequences <- gecko_df$sequence
 # Create dictionary for onehoencoding
 one_hot_map <- c("0001", "0010", "0100", "1000")
 names(one_hot_map) <- c("A", "C", "G", "T")
@@ -78,20 +84,20 @@ onehotresult <- splitfunction(sequences)
 # Add to dataframe gecko_df
 new_dataframe <- cbind(gecko_df, onehotresult)
 # Add to datbase table GeCKO
-dbWriteTable(conn, "GeCKO", new_dataframe, overwrite = TRUE)
+dbWriteTable(conn, "GeCKO", new_dataframe, append = TRUE)
 # Verify the update
 gecko_df <- dbGetQuery(conn, "SELECT * FROM GeCKO")
 head(gecko_df)
 
 # Join the two Tables sgRNA_data and GeCKO
-dbGetQuery(conn,
+dbExecute(conn,
                 "
                 UPDATE sgRNA_data
                 SET LFC_binary = 1
                 WHERE LFC > 0
                 "
                 )
-dbGetQuery(conn,
+dbExecute(conn,
                 "
                 UPDATE sgRNA_data
                 SET LFC_binary = 0
@@ -99,13 +105,15 @@ dbGetQuery(conn,
                 "
                 )
 
-
+test <- dbGetQuery(conn, "SELECT * FROM sgRNA_data")
+test[25000:25500,]
 
 
 
 
 # Disconnect from database
 dbDisconnect(conn)
+
 
 
 
