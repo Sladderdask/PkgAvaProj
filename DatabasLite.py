@@ -36,3 +36,7 @@ def define_db():
 
 define_db()
 
+connection.close()
+
+
+
