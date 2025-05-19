@@ -23,19 +23,19 @@ dbListFields(conn, "GeCKO")
 colnames(sgRNA_data)
 
 
+
 # Adding data to database
 selected_data <- sgRNA_data[, c("sgrna", "LFC", "score")]
-colnames(selected_data) <- dbListFields(conn, "sgRNA_data")
+colnames(selected_data) <- c("sgRNAid", "LFC", "score")
 dbWriteTable(conn, "sgRNA_data", selected_data, append = TRUE)
 
 selected_data <- sgRNA_A[, c("UID", "seq")]
-colnames(selected_data) <- dbListFields(conn, "GeCKO")
+colnames(selected_data) <- c("UID", "Sequence")
 dbWriteTable(conn, "GeCKO", selected_data, append = TRUE)
 
 selected_data <- sgRNA_B[, c("UID", "seq")]
-colnames(selected_data) <- dbListFields(conn, "GeCKO")
+colnames(selected_data) <- c("UID", "Sequence")
 dbWriteTable(conn, "GeCKO", selected_data, append = TRUE)
-
 
 # Peek into database
 head(dbReadTable(conn, "sgRNA_data"))
@@ -46,7 +46,7 @@ tail(dbReadTable(conn, "GeCKO"))
 # Reqrite seqeunces into Binary seqs to one hot encoding
 gecko_df <- dbGetQuery(conn, "SELECT * FROM GeCKO")
 # Take the sequences from the column seq
-sequences <- gecko_df$sequence
+sequences <- gecko_df$Sequence
 # Create dictionary for onehoencoding
 one_hot_map <- c("0001", "0010", "0100", "1000")
 names(one_hot_map) <- c("A", "C", "G", "T")
@@ -81,10 +81,17 @@ splitfunction <- function(seqs) {
 # Call on the function using the DNA seqeunces in the GaCKO table
 onehotresult <- splitfunction(sequences)
 
-# Add to dataframe gecko_df
-new_dataframe <- cbind(gecko_df, onehotresult)
+
+onehotresult[1:5,1:20]
+
+# Add to onehotresult gecko_df
+gecko_df[,3:22] <- onehotresult
+
+gecko_df[1:5,1:ncol(gecko_df)]
+
 # Add to datbase table GeCKO
-dbWriteTable(conn, "GeCKO", new_dataframe, append = TRUE)
+dbWriteTable(conn, "GeCKO", gecko_df, overwrite = TRUE)
+
 # Verify the update
 gecko_df <- dbGetQuery(conn, "SELECT * FROM GeCKO")
 head(gecko_df)
