@@ -8,6 +8,10 @@ readr
 
 # For machine learning
 scikit-learn
+tensorflow
+
+# SHAP-scores
+shap
 
 # Data
 https://orcs.thebiogrid.org/downloads/b5c747cfbc858b7564e95de50864ad95/b5c747cfbc858b7564e95de50864ad95.zip
