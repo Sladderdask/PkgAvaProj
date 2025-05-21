@@ -108,7 +108,7 @@ cursor.execute(
               ''')
 
 X = cursor.fetchall()
-X
+
 connect.close()
 
 
@@ -123,12 +123,12 @@ X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.
 model_classifier = RandomForestClassifier(criterion='gini', random_state = 42)
 
 # fit the model to the data, define loss function.
-model.fit(X_train, y_train)
+model_classifier.fit(X_train, y_train)
 
 # Make predicitons and test-val-loss-plot.
 from sklearn import metrics
 
-pred = model.predict(X_val)
+pred = model_classifier.predict(X_val)
 
 print('Accuracy:', metrics.accuracy_score(y_val, pred))
 # Accuracy 0.5971826527382083
@@ -139,6 +139,15 @@ print('Confusion:', metrics.confusion_matrix(y_val, pred))
 #            [3953 5498]]
 
 
+
+import shap
+explainer = shap.Explainer(model_classifier)
+shap_values = explainer(np.array(X_val))
+
+
+ np.shape(shap_values.values)
+
+shap.plots.waterfall(shap_values[0])
 
 
 #####################################Neural network############################################
@@ -178,14 +187,16 @@ explainer = shap.Explainer(model)
 shap_values = explainer(np.array(X_val))
 
 
+np.shape(shap_values.values)
+
+shap.plots.waterfall(shap_values[0])
 
 
 
 
 
 
-
-
+  
 
 
 
