@@ -17,30 +17,42 @@ View(sgRNA_B)
 conn <- dbConnect(SQLite(), dbname = "DatabasLite.db")
 
 # Verify database
+dbListTables(conn, "sgRNA_data")
+dbListFields(conn, "sgRNA_data")
+
 dbListTables(conn, "GeCKO")
 dbListFields(conn, "GeCKO")
-dbListFields(conn, "GeCKO")
+
+colnames(sgRNA_data)
+
 
 
 # Adding data to database
 selected_data <- sgRNA_data[, c("sgrna", "LFC", "score")]
-dbWriteTable(conn, "sgRNA_data", selected_data, overwrite = TRUE)
+
+colnames(selected_data) <- c("sgRNAid", "LFC", "score")
+dbWriteTable(conn, "sgRNA_data", selected_data, append = TRUE)
 
 selected_data <- sgRNA_A[, c("UID", "seq")]
-dbWriteTable(conn, "GeCKO", selected_data, overwrite = TRUE)
-
-selected_data <- sgRNA_B[, c("UID", "seq")]
+colnames(selected_data) <- c("UID", "Sequence")
 dbWriteTable(conn, "GeCKO", selected_data, append = TRUE)
 
+selected_data <- sgRNA_B[, c("UID", "seq")]
+colnames(selected_data) <- c("UID", "Sequence")
+dbWriteTable(conn, "GeCKO", selected_data, append = TRUE)
 
 # Peek into database
+head(dbReadTable(conn, "sgRNA_data"))
+dbListFields(conn, "sgRNA_data")
 head(dbReadTable(conn, "GeCKO"))
 tail(dbReadTable(conn, "GeCKO"))
 
 # Reqrite seqeunces into Binary seqs to one hot encoding
 gecko_df <- dbGetQuery(conn, "SELECT * FROM GeCKO")
 # Take the sequences from the column seq
-sequences <- gecko_df$seq
+
+sequences <- gecko_df$Sequence
+
 # Create dictionary for onehoencoding
 one_hot_map <- c("0001", "0010", "0100", "1000")
 names(one_hot_map) <- c("A", "C", "G", "T")
@@ -75,32 +87,40 @@ splitfunction <- function(seqs) {
 # Call on the function using the DNA seqeunces in the GaCKO table
 onehotresult <- splitfunction(sequences)
 
-# Add to dataframe gecko_df
-new_dataframe <- cbind(gecko_df, onehotresult)
+onehotresult[1:5,1:20]
+
+# Add to onehotresult gecko_df
+gecko_df[,3:22] <- onehotresult
+
+gecko_df[1:5,1:ncol(gecko_df)]
+
 # Add to datbase table GeCKO
-dbWriteTable(conn, "GeCKO", new_dataframe, overwrite = TRUE)
+dbWriteTable(conn, "GeCKO", gecko_df, overwrite = TRUE)
+
 # Verify the update
 gecko_df <- dbGetQuery(conn, "SELECT * FROM GeCKO")
 head(gecko_df)
 
 # Join the two Tables sgRNA_data and GeCKO
-whole_dataframe <- dbGetQuery(conn, 
-                              "SELECT * 
-                            FROM sgRNA_data 
-                            INNER JOIN GeCKO
-                            WHERE sgRNA_data.sgrna=GeCKO.UID")
 
-whole_dataframe
+dbExecute(conn,
+                "
+                UPDATE sgRNA_data
+                SET LFC_binary = 1
+                WHERE LFC > 0
+                "
+                )
+dbExecute(conn,
+                "
+                UPDATE sgRNA_data
+                SET LFC_binary = 0
+                WHERE LFC = 0 OR LFC < 0
+                "
+                )
 
-
-
-
-
+test <- dbGetQuery(conn, "SELECT * FROM sgRNA_data")
 
 # Disconnect from database
 dbDisconnect(conn)
-
-
-
-
-
+                         
+                         
