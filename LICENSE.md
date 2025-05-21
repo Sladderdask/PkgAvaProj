@@ -8,3 +8,6 @@ Apache License 2.0
 
 # Shiny
 GPL-3 (GNU GENERAL PUBLIC LICENSE version 3)
+
+## SHAP
+MIT License (MIT)

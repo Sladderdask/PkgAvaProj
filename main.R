@@ -19,13 +19,17 @@ conn <- dbConnect(SQLite(), dbname = "DatabasLite.db")
 # Verify database
 dbListTables(conn, "sgRNA_data")
 dbListFields(conn, "sgRNA_data")
+
+dbListTables(conn, "GeCKO")
 dbListFields(conn, "GeCKO")
+
 colnames(sgRNA_data)
 
 
 
 # Adding data to database
 selected_data <- sgRNA_data[, c("sgrna", "LFC", "score")]
+
 colnames(selected_data) <- c("sgRNAid", "LFC", "score")
 dbWriteTable(conn, "sgRNA_data", selected_data, append = TRUE)
 
@@ -46,7 +50,9 @@ tail(dbReadTable(conn, "GeCKO"))
 # Reqrite seqeunces into Binary seqs to one hot encoding
 gecko_df <- dbGetQuery(conn, "SELECT * FROM GeCKO")
 # Take the sequences from the column seq
+
 sequences <- gecko_df$Sequence
+
 # Create dictionary for onehoencoding
 one_hot_map <- c("0001", "0010", "0100", "1000")
 names(one_hot_map) <- c("A", "C", "G", "T")
@@ -81,7 +87,6 @@ splitfunction <- function(seqs) {
 # Call on the function using the DNA seqeunces in the GaCKO table
 onehotresult <- splitfunction(sequences)
 
-
 onehotresult[1:5,1:20]
 
 # Add to onehotresult gecko_df
@@ -97,6 +102,7 @@ gecko_df <- dbGetQuery(conn, "SELECT * FROM GeCKO")
 head(gecko_df)
 
 # Join the two Tables sgRNA_data and GeCKO
+
 dbExecute(conn,
                 "
                 UPDATE sgRNA_data
@@ -113,16 +119,8 @@ dbExecute(conn,
                 )
 
 test <- dbGetQuery(conn, "SELECT * FROM sgRNA_data")
-test[25000:25500,]
-
-
-
 
 # Disconnect from database
 dbDisconnect(conn)
-
-
-
-
-
-
+                         
+                         
