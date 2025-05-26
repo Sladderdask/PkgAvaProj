@@ -9,3 +9,4 @@ inst/doc
 *.RDataTmp*
 *.DS_Store
 *.Rproj*
+.Rproj.user
