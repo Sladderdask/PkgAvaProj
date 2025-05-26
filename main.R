@@ -4,9 +4,9 @@ library(DBI)
 library(RSQLite)
 
 # Import excel files
-sgRNA_data <- read_excel("sgRNA_data.xlsx")
-sgRNA_A <- read.csv("Library_A.csv")
-sgRNA_B <- read.csv("Library_B.csv")
+sgRNA_data <- read_excel("inst/extdata/sgRNA_data.xlsx")
+sgRNA_A <- read.csv("inst/extdata/Library_A.csv")
+sgRNA_B <- read.csv("inst/extdata/Library_B.csv")
 
 # Open excel files
 View(sgRNA_data)
@@ -14,7 +14,7 @@ View(sgRNA_A)
 View(sgRNA_B)
 
 # Connect to database
-conn <- dbConnect(SQLite(), dbname = "DatabasLite.db")
+conn <- dbConnect(SQLite(), dbname = "inst/extdata/DatabasLite.db")
 
 # Verify database
 dbListTables(conn, "sgRNA_data")

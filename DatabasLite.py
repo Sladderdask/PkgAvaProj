@@ -41,13 +41,13 @@ CREATE TABLE GeCKO(
 """
 
 try:
-    os.remove("DatabasLite.db")
+    os.remove("inst/exdata/DatabasLite.db")
 except FileNotFoundError:
     pass
 except OSError as e:
   print(f"An error occured: {e}")
 
-connection = sqlite3.connect("DatabasLite.db")
+connection = sqlite3.connect("inst/exdata/DatabasLite.db")
 
 def define_db():
     cursor = connection.cursor()
