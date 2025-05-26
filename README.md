@@ -39,7 +39,6 @@ Moa Ögren – moaa.ogren@gmail.com
 This package was developed for the Advanced Bioinformatics course at 
 Umeå University.
 
-
 ### Contributing
 
 We DO welcome contributions.
