@@ -1,6 +1,10 @@
+<<<<<<< HEAD
 inst/doc
 *.Rproj.user
 *.Rproj
+=======
+*.Rproj.user
+>>>>>>> avancerad-temp
 *.Rhistory
 *.RData
 *.Ruserdata
@@ -8,4 +12,8 @@ inst/doc
 *.csv
 *.db
 *.RDataTmp*
+<<<<<<< HEAD
 *.DS_Store
+=======
+*.Rproj*
+>>>>>>> avancerad-temp
