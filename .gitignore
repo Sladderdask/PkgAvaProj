@@ -6,4 +6,4 @@
 *.csv
 *.db
 *.RDataTmp*
-.Rproj.user
+*.Rproj*
