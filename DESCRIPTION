@@ -1,0 +1,28 @@
+Package: AvanceradBioinformatikPackage
+Title: Tools for Advanced Bioinformatics Course
+Version: 0.1.0
+Authors@R:
+  c(
+      person("Dennis", "Harding", email = "dennis.harding2@gmail.com", role = c("aut", "cre")),
+      person("Moa", "Ögren", email = "moaa.ogren@gmail.com", role = c("aut", "cre"))
+  )
+Description: 
+  This package provides tools and instructions for data preprocessing 
+  and analysis in the context of the course Advanced Bioinformatics at 
+  Umeå University. The goal of the project is to identify optimal spacer 
+  sequences for gene knockout using CRISPR-Cas9.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports:
+  RSQLite
+  readxl
+  readr
+  scikit-learn
+  tensorflow
+  shap
+  shiny
+Suggests: 
+  None
+VignetteBuilder: knitr
