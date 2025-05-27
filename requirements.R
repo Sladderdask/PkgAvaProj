@@ -1,0 +1,14 @@
+# Set CRAN repo globally to avoid repeated lookups
+options(repos = c(CRAN = "https://cloud.r-project.org"))
+
+# To run Python
+install.packages("reticulate")
+
+# Database management packages
+install.packages(c("RSQLite", "DBI"))
+
+# Interactive representations
+install.packages("shiny")
+
+# Data formatting
+install.packages(c("readxl", "readr"))
