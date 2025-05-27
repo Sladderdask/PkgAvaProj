@@ -2,11 +2,12 @@ library(readxl)
 library(readr)
 library(DBI)
 library(RSQLite)
+library(biomaRt)
 
 # Import excel files
-sgRNA_data <- read_excel("inst/extdata/sgRNA_data.xlsx")
-sgRNA_A <- read.csv("inst/extdata/Library_A.csv")
-sgRNA_B <- read.csv("inst/extdata/Library_B.csv")
+sgRNA_data <- read_excel("data/sgRNA_data.xlsx")
+sgRNA_A <- read.csv("data/Library_A.csv")
+sgRNA_B <- read.csv("data/Library_B.csv")
 
 # Open excel files
 View(sgRNA_data)
@@ -14,14 +15,13 @@ View(sgRNA_A)
 View(sgRNA_B)
 
 # Connect to database
-conn <- dbConnect(SQLite(), dbname = "inst/extdata/DatabasLite.db")
+conn <- dbConnect(SQLite(), dbname = "src/DatabasLite.db")
 
 # Verify database
 dbListTables(conn, "sgRNA_data")
 dbListFields(conn, "sgRNA_data")
-
-dbListTables(conn, "GeCKO")
 dbListFields(conn, "GeCKO")
+dbListFields(conn, "RNA_seq")
 
 colnames(sgRNA_data)
 
@@ -119,6 +119,55 @@ dbExecute(conn,
                 )
 
 test <- dbGetQuery(conn, "SELECT * FROM sgRNA_data")
+
+
+############################## RNA-seq data ####################################
+
+
+# Read the RNA seq data file -> Needs to be converted to corresponding gene names
+ensemble_ids <- read.delim("data/RNA_seq_data.gz")
+# Check ensemble choices
+listEnsembl()
+# Choose genes as ensemble and dataset: hsapiens_gene_ensembl
+ensemble_connect <- useEnsembl(biomart = "genes", dataset = "hsapiens_gene_ensembl", mirror = "asia")
+# Check for available attributes
+attribute <- listAttributes(ensemble_connect)
+# Translate the Ensemble Gene Id to the corresponding gene name
+external_gene_names <- getBM(
+                              attributes = c("ensembl_gene_id", "external_gene_name"),
+                              filters ="ensembl_gene_id",
+                              values = ensemble_ids$geneName,
+                              mart = ensemble_connect
+                              )
+# Merge the dataframes so the genename has its corresponding fpkm.counted value
+merged_df <- merge(external_gene_names,
+                   ensemble_ids[, c("geneName", "fpkm.counted")],
+                   by.x = "ensemble_id",
+                   by.y = "geneName")
+
+
+
+# Add to database
+colnames(merged_df ) <- c("ensemble_id", "gene_name", "fpkm_counted")
+dbWriteTable(conn, "RNA_seq",merged_df, append = TRUE)
+test <- dbGetQuery(conn, "SELECT * FROM RNA_seq")
+
+
+# Choose threshold...
+dbExecute(conn,
+          "
+                UPDATE RNA_seq
+                SET fpkm_binary = 1
+                WHERE fpkm_counted > 1
+                "
+)
+
+
+
+
+
+
+
 
 # Disconnect from database
 dbDisconnect(conn)
