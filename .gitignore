@@ -5,7 +5,6 @@ inst/doc
 *.Ruserdata
 *.xlsx
 *.csv
-*.db
 *.RDataTmp*
 *.DS_Store
 *.Rproj*
