@@ -12,3 +12,8 @@ install.packages("shiny")
 
 # Data formatting
 install.packages(c("readxl", "readr"))
+
+# RNA seq
+install.packages("BiocManager")
+# ?
+BiocManager::install("biomaRt")
