@@ -1,5 +1,4 @@
 
-
 # Ta in rätt paket
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
@@ -140,27 +139,19 @@ print('Confusion:', metrics.confusion_matrix(y_val, pred))
 
 
 
-import shap
-explainer = shap.Explainer(model_classifier)
-shap_values = explainer(np.array(X_val))
 
-
- np.shape(shap_values.values)
-
-shap.plots.waterfall(shap_values[0])
 
 
 #####################################Neural network############################################
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import SimpleRNN, Dense
+#from tensorflow.keras.models import Sequential
+#from tensorflow.keras.layers import SimpleRNN, Dense
 
-model = Sequential()
-model.add(SimpleRNN(units=50, activation='tanh', input_shape=(20, 4)))
-model.add(Dense(1, activation='sigmoid'))  # Binary classification
+#model = Sequential()
+#model.add(SimpleRNN(units=50, activation='tanh', input_shape=(20, 4)))
+#model.add(Dense(1, activation='sigmoid'))  # Binary classification
 
-model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-model.summary()
-
+#model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+#model.summary()
 
 
 ####### Plots #######

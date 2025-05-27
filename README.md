@@ -83,6 +83,7 @@ Moa Ögren – moaa.ogren@gmail.com
 This package was developed for the Advanced Bioinformatics course at 
 Umeå University.
 
+<<<<<<< HEAD
 ### Data files
 If one wants to check the data used in the project, one can dowload the files at the following URLs:
 
@@ -91,6 +92,8 @@ If one wants to check the data used in the project, one can dowload the files at
     https://media.addgene.org/cms/filer_public/2d/8b/2d8baa42-f5c8-4b63-9c6c-bd98f333b29e/human_geckov2_library_b_09mar2015.csv
 
 
+=======
+>>>>>>> main
 ### Contributing
 
 We DO welcome contributions.
