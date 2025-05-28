@@ -2,6 +2,8 @@ library(readxl)
 library(readr)
 library(DBI)
 library(RSQLite)
+library(dplyr)
+library(stringr)
 
 # Import excel files
 sgRNA_data <- read_excel("data/sgRNA_data.xlsx")
@@ -14,7 +16,7 @@ View(sgRNA_A)
 View(sgRNA_B)
 
 # Connect to database
-conn <- dbConnect(SQLite(), dbname = "data/DatabasLite.db")
+conn <- dbConnect(SQLite(), dbname = "src/DatabasLite.db")
 
 # Verify database
 dbListTables(conn, "sgRNA_data")
@@ -95,7 +97,7 @@ gecko_df[,3:22] <- onehotresult
 gecko_df[1:5,1:ncol(gecko_df)]
 
 # Add to datbase table GeCKO
-dbWriteTable(conn, "GeCKO", gecko_df, overwrite = TRUE)
+dbWriteTable(conn, "GeCKO", gecko_df, overwrite= TRUE)
 
 # Verify the update
 gecko_df <- dbGetQuery(conn, "SELECT * FROM GeCKO")
@@ -119,6 +121,24 @@ dbExecute(conn,
                 )
 
 test <- dbGetQuery(conn, "SELECT * FROM sgRNA_data")
+
+
+
+
+# Add GC content to database
+gecko_df <- dbGetQuery(conn, "SELECT * FROM GeCKO")
+gecko_df <- gecko_df %>%
+  mutate(gc_content = str_count(Sequence, "[GCgc]") / str_length(Sequence))
+
+#dbExecute(conn, "ALTER TABLE GeCKO
+#                ADD COLUMN gc_content REAL")
+
+# Write the updated table back
+dbWriteTable(conn, "GeCKO", gecko_df, overwrite = TRUE)
+
+# Test that the database is intact
+test <- dbGetQuery(conn, "SELECT * FROM GeCKO")
+
 
 # Disconnect from database
 dbDisconnect(conn)
