@@ -4,9 +4,9 @@ library(DBI)
 library(RSQLite)
 
 # Import excel files
-sgRNA_data <- read_excel("inst/extdata/sgRNA_data.xlsx")
-sgRNA_A <- read.csv("inst/extdata/Library_A.csv")
-sgRNA_B <- read.csv("inst/extdata/Library_B.csv")
+sgRNA_data <- read_excel("data/sgRNA_data.xlsx")
+sgRNA_A <- read.csv("data/Library_A.csv")
+sgRNA_B <- read.csv("data/Library_B.csv")
 
 # Open excel files
 View(sgRNA_data)
@@ -14,7 +14,7 @@ View(sgRNA_A)
 View(sgRNA_B)
 
 # Connect to database
-conn <- dbConnect(SQLite(), dbname = "inst/extdata/DatabasLite.db")
+conn <- dbConnect(SQLite(), dbname = "data/DatabasLite.db")
 
 # Verify database
 dbListTables(conn, "sgRNA_data")
@@ -58,7 +58,7 @@ one_hot_map <- c("0001", "0010", "0100", "1000")
 names(one_hot_map) <- c("A", "C", "G", "T")
 
 
-# Function that takes in DNA sequences, 
+# Function that takes in DNA sequences,
 # split each nucleotide into separate column
 # And translate the nucleotide to binaryform
 splitfunction <- function(seqs) {
@@ -67,21 +67,21 @@ splitfunction <- function(seqs) {
 
   # Number of positions (should be 20)
   n_pos <- length(split_seqs[[1]])
-  
+
   # Preallocate list of columns, vectors made of lists
   columns <- vector("list", n_pos)
-  
+
   # For each position 1:20, extract that base from all sequences and one-hot encode,
   for (nucleotide in 1:n_pos) {
     # Go through position i for each row -> function(row)
     bases_at_i <- sapply(split_seqs, function(row) row[nucleotide])
     columns[[nucleotide]] <- one_hot_map[bases_at_i]
   }
-  
+
   # Converting list into data frame and combine with name columns
   df <- as.data.frame(columns, stringsAsFactors = FALSE)
   colnames(df) <- paste0("nt", 1:n_pos)
-  
+
   return(df)
 }
 # Call on the function using the DNA seqeunces in the GaCKO table
@@ -122,5 +122,4 @@ test <- dbGetQuery(conn, "SELECT * FROM sgRNA_data")
 
 # Disconnect from database
 dbDisconnect(conn)
-                         
-                         
+
