@@ -3,6 +3,8 @@ library(readr)
 library(DBI)
 library(RSQLite)
 library(biomaRt)
+library(dplyr)
+library(stringr)
 
 # Import excel files
 sgRNA_data <- read_excel("data/sgRNA_data.xlsx")
@@ -57,7 +59,7 @@ one_hot_map <- c("0001", "0010", "0100", "1000")
 names(one_hot_map) <- c("A", "C", "G", "T")
 
 
-# Function that takes in DNA sequences, 
+# Function that takes in DNA sequences,
 # split each nucleotide into separate column
 # And translate the nucleotide to binaryform
 onehotencodingfunction <- function(seqs) {
@@ -66,21 +68,21 @@ onehotencodingfunction <- function(seqs) {
 
   # Number of positions (should be 20)
   n_pos <- length(split_seqs[[1]])
-  
+
   # Preallocate list of columns, vectors made of lists
   columns <- vector("list", n_pos)
-  
+
   # For each position 1:20, extract that base from all sequences and one-hot encode,
   for (nucleotide in 1:n_pos) {
     # Go through position i for each row -> function(row)
     bases_at_i <- sapply(split_seqs, function(row) row[nucleotide])
     columns[[nucleotide]] <- one_hot_map[bases_at_i]
   }
-  
+
   # Converting list into data frame and combine with name columns
   df <- as.data.frame(columns, stringsAsFactors = FALSE)
   colnames(df) <- paste0("nt", 1:n_pos)
-  
+
   return(df)
 }
 # Call on the function using the DNA seqeunces in the GaCKO table
@@ -94,7 +96,7 @@ gecko_df[,3:22] <- onehotresult
 gecko_df[1:5,1:ncol(gecko_df)]
 
 # Add to datbase table GeCKO
-dbWriteTable(conn, "GeCKO", gecko_df, overwrite = TRUE)
+dbWriteTable(conn, "GeCKO", gecko_df, overwrite= TRUE)
 
 # Verify the update
 gecko_df <- dbGetQuery(conn, "SELECT * FROM GeCKO")
@@ -118,6 +120,7 @@ dbExecute(conn,
                 )
 
 test <- dbGetQuery(conn, "SELECT * FROM sgRNA_data")
+
 
 
 ############################## RNA-seq data ####################################
@@ -163,11 +166,21 @@ dbExecute(conn,
 
 
 
+# Add GC content to database
+gecko_df <- dbGetQuery(conn, "SELECT * FROM GeCKO")
+gecko_df <- gecko_df %>%
+  mutate(gc_content = str_count(Sequence, "[GCgc]") / str_length(Sequence))
 
+#dbExecute(conn, "ALTER TABLE GeCKO
+#                ADD COLUMN gc_content REAL")
 
+# Write the updated table back
+dbWriteTable(conn, "GeCKO", gecko_df, overwrite = TRUE)
+
+# Test that the database is intact
+test <- dbGetQuery(conn, "SELECT * FROM GeCKO")
 
 
 # Disconnect from database
 dbDisconnect(conn)
-                         
-                         
+

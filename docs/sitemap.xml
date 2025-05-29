@@ -1,12 +1,14 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
-<url><loc>/404.html</loc></url>
-<url><loc>/articles/index.html</loc></url>
-<url><loc>/articles/vignette.html</loc></url>
-<url><loc>/authors.html</loc></url>
-<url><loc>/index.html</loc></url>
-<url><loc>/LICENSE-text.html</loc></url>
-<url><loc>/LICENSE.html</loc></url>
-<url><loc>/reference/fun.html</loc></url>
-<url><loc>/reference/index.html</loc></url>
+<url><loc>https://Sladderdask.github.io/PkgAvaProj/404.html</loc></url>
+<url><loc>https://Sladderdask.github.io/PkgAvaProj/articles/index.html</loc></url>
+<url><loc>https://Sladderdask.github.io/PkgAvaProj/articles/vignette.html</loc></url>
+<url><loc>https://Sladderdask.github.io/PkgAvaProj/authors.html</loc></url>
+<url><loc>https://Sladderdask.github.io/PkgAvaProj/index.html</loc></url>
+<url><loc>https://Sladderdask.github.io/PkgAvaProj/LICENSE-text.html</loc></url>
+<url><loc>https://Sladderdask.github.io/PkgAvaProj/LICENSE.html</loc></url>
+<url><loc>https://Sladderdask.github.io/PkgAvaProj/reference/fun.html</loc></url>
+<url><loc>https://Sladderdask.github.io/PkgAvaProj/reference/fun2.html</loc></url>
+<url><loc>https://Sladderdask.github.io/PkgAvaProj/reference/index.html</loc></url>
+<url><loc>https://Sladderdask.github.io/PkgAvaProj/reference/onehotfun.html</loc></url>
 </urlset>
 

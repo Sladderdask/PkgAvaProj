@@ -3,8 +3,8 @@ Title: Tools for Advanced Bioinformatics Course
 Version: 0.1.0
 Authors@R:
   c(
-      person("Dennis", "Harding", email = "dennis.harding2@gmail.com", role = c("aut", "cre")),
-      person("Moa", "Ögren", email = "moaa.ogren@gmail.com", role = c("aut", "cre"))
+    person("Dennis", "Harding", email = "dennis.harding2@gmail.com", role = c("aut", "cre")),
+    person("Moa", "Ögren", email = "moaa.ogren@gmail.com", role = c("aut", "cre"))
   )
 Description: 
   This package provides tools and instructions for data preprocessing 
@@ -16,13 +16,12 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports:
-  RSQLite
-  readxl
-  readr
-  scikit-learn
-  tensorflow
-  shap
-  shiny
+    RSQLite,
+    readxl,
+    readr,
+    shiny,
+    reticulate
 Suggests: 
-  None
+    None
 VignetteBuilder: knitr
+URL: https://Sladderdask.github.io/PkgAvaProj
