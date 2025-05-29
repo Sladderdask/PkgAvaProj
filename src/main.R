@@ -27,9 +27,8 @@ colnames(sgRNA_data)
 
 
 
-# Adding data to database
+# Adding data to database -> Gör om till Funktion!!!!!
 selected_data <- sgRNA_data[, c("sgrna", "LFC", "score")]
-
 colnames(selected_data) <- c("sgRNAid", "LFC", "score")
 dbWriteTable(conn, "sgRNA_data", selected_data, append = TRUE)
 
@@ -47,10 +46,10 @@ dbListFields(conn, "sgRNA_data")
 head(dbReadTable(conn, "GeCKO"))
 tail(dbReadTable(conn, "GeCKO"))
 
-# Reqrite seqeunces into Binary seqs to one hot encoding
+
+# Rewrite seqeunces into Binary seqs to one hot encoding
 gecko_df <- dbGetQuery(conn, "SELECT * FROM GeCKO")
 # Take the sequences from the column seq
-
 sequences <- gecko_df$Sequence
 
 # Create dictionary for onehoencoding
@@ -61,7 +60,7 @@ names(one_hot_map) <- c("A", "C", "G", "T")
 # Function that takes in DNA sequences, 
 # split each nucleotide into separate column
 # And translate the nucleotide to binaryform
-splitfunction <- function(seqs) {
+onehotencodingfunction <- function(seqs) {
   # Split each sequence into individual characters
   split_seqs <- strsplit(seqs, "")
 
@@ -85,7 +84,7 @@ splitfunction <- function(seqs) {
   return(df)
 }
 # Call on the function using the DNA seqeunces in the GaCKO table
-onehotresult <- splitfunction(sequences)
+onehotresult <- onehotencodingfunction(sequences)
 
 onehotresult[1:5,1:20]
 
@@ -107,14 +106,14 @@ dbExecute(conn,
                 "
                 UPDATE sgRNA_data
                 SET LFC_binary = 1
-                WHERE LFC > 0
+                WHERE ABS(LFC) > 1
                 "
                 )
 dbExecute(conn,
                 "
                 UPDATE sgRNA_data
                 SET LFC_binary = 0
-                WHERE LFC = 0 OR LFC < 0
+                WHERE ABS(LFC) = 1 OR ABS(LFC) < 1
                 "
                 )
 
@@ -144,7 +143,6 @@ merged_df <- merge(external_gene_names,
                    ensemble_ids[, c("geneName", "fpkm.counted")],
                    by.x = "ensemble_id",
                    by.y = "geneName")
-
 
 
 # Add to database
