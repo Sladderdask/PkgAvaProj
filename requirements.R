@@ -17,8 +17,7 @@ install.packages(c("readxl", "readr", "seqinr", "dplyr", "stringr"))
 install.packages("BiocManager")
 # For translating gene id to gene name ???   
 BiocManager::install("biomaRt")
-# For calculating GC content ???
-BiocManager::install("LncFinder")
+
 
 
 
