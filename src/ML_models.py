@@ -8,7 +8,7 @@ import pandas as pd
 import numpy as np
 
 # Importera datan från databasen och dela upp i x och y.
-connect = sqlite3.connect("DatabasLite.db")
+connect = sqlite3.connect("src/DatabasLite.db")
 
 cursor = connect.cursor()
 
@@ -80,7 +80,7 @@ import pandas as pd
 import numpy as np
 
 # Importera datan från databasen och dela upp i x och y.
-connect = sqlite3.connect("DatabasLite.db")
+connect = sqlite3.connect("src/DatabasLite.db")
 
 cursor = connect.cursor()
 
@@ -107,7 +107,7 @@ cursor.execute(
               ''')
 
 X = cursor.fetchall()
-
+X[1:1]
 connect.close()
 
 
@@ -179,6 +179,8 @@ shap_values = explainer(np.array(X_val))
 
 
 np.shape(shap_values.values)
+
+# shap.plot.summary -> Snygg plott
 
 shap.plots.waterfall(shap_values[0])
 

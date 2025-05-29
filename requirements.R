@@ -11,4 +11,13 @@ install.packages(c("RSQLite", "DBI"))
 install.packages("shiny")
 
 # Data formatting
-install.packages(c("readxl", "readr"))
+install.packages(c("readxl", "readr", "seqinr", "dplyr", "stringr"))
+
+# RNA seq
+install.packages("BiocManager")
+# For translating gene id to gene name ???   
+BiocManager::install("biomaRt")
+
+
+
+

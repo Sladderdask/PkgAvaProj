@@ -6,8 +6,18 @@ part of the *Advanced Bioinformatics* course at Umeå University.
 The main purpose if this package is on identifying optimal spacer 
 sequences for gene knockout using CRISPR-Cas9.
 
-### 🚀 Installation and example usage
+## 🚀 Installation and example usage
 
+To get started:
+1. Copy the URL from the repository
+2. Open a terminal and navigate to a directory of choice and run: git clone URL
+
+### Local installation
+Install the packages using
+```bash
+Rscript requirements.R
+pip install -r requirements.txt
+```
 To install the development version of the package from GitHub:
 
 ```r
@@ -18,16 +28,9 @@ install.packages("devtools")
 devtools::install_github("Sladderdask/AvanceradBioinformatikPackage")
 ```
 
-### Local installation
-Install the packages using
-```r
-Rscript requirements.R
-pip install -r requirements.txt
-```
-
+### Example code
 
 ```r
-#example usage
 library(AvanceradbioinformatikPackage)
 
 result <- fun(5)
@@ -44,24 +47,25 @@ To build the Docker image, run the following command in the project
 root directory
 
 ```bash
-docker build -t CRISPR_KO_screening .
+docker build -t crispr_ko_screening .
 ```
 
 #### Run the container
 To run the container, run the following commands
 ```bash
 docker run -d 
--- name CRISPR_KO_screening
+-- name crispr_ko_screening
 -p 8787:8787
 -e PASSWORD=YOURPASSWORD
-CRISPR_KO_screening
+crispr_ko_screening
 ```
 
-#### To log in to RStudio
-username -> Default set to rstudio
+#### Accessing the RStudio server
+Navigate to http://localhost:8787 or open the port in Docker desktop.
+username is by default set to rstudio.
 
 #### To run the code
-Change the workiing directory using:
+Change the working directory using:
 ```bash
 Import os
 os.chdir("/home/rstudio/projekt/src")
@@ -83,7 +87,6 @@ Moa Ögren – moaa.ogren@gmail.com
 This package was developed for the Advanced Bioinformatics course at 
 Umeå University.
 
-<<<<<<< HEAD
 ### Data files
 If one wants to check the data used in the project, one can dowload the files at the following URLs:
 
@@ -92,8 +95,6 @@ If one wants to check the data used in the project, one can dowload the files at
     https://media.addgene.org/cms/filer_public/2d/8b/2d8baa42-f5c8-4b63-9c6c-bd98f333b29e/human_geckov2_library_b_09mar2015.csv
 
 
-=======
->>>>>>> main
 ### Contributing
 
 We DO welcome contributions.

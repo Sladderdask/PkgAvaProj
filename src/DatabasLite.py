@@ -38,16 +38,23 @@ CREATE TABLE GeCKO(
   
 );
 
+CREATE TABLE RNA_seq(
+  ensemble_id TEXT,
+  gene_name TEXT,
+  fpkm_counted REAL,
+  fpkm_binary INTEGER
+);
+
 """
 
 try:
-    os.remove("inst/exdata/DatabasLite.db")
+    os.remove("src/DatabasLite.db")
 except FileNotFoundError:
     pass
 except OSError as e:
   print(f"An error occured: {e}")
 
-connection = sqlite3.connect("inst/exdata/DatabasLite.db")
+connection = sqlite3.connect("src/DatabasLite.db")
 
 def define_db():
     cursor = connection.cursor()
@@ -57,3 +64,4 @@ def define_db():
 define_db()
 
 connection.close()
+
