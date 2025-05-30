@@ -29,69 +29,105 @@ dbListFields(conn, "GeCKO")
 dbListFields(conn, "RNA_seq")
 
 
-######################### One hot encoding #########################3
+####################### S4 class ##################################
 
-# Create dictionary for onehotencoding
-one_hot_map <- c("0001", "0010", "0100", "1000")
-names(one_hot_map) <- c("A", "C", "G", "T")
+# Define the S4 class -> Define what the class should include
+# Define prototype -> If nothing is sent in go to default
+setClass("Dataformation_Insertion_Db",
+         slots = list(
+           db = "DBIConnection",
+           sequences = "character",
+           data = "data.frame",
+           onehotresults = "data.frame",
+           one_hot_map = "character",
+           datatable = "character",
+           append = "logical",
+           set_command = "character",
+           where_command = "character"
+         ),
+         prototype = list(
+           db = NULL,
+           sequences = character(),
+           data = data.frame(),
+           onehotresults = data.frame(),
+           one_hot_map = c(A="0001", C="0010", G="0100", T="1000"),
+           datatable = character(),
+           append = TRUE,
+           set_command = character(),
+           where_command = character()
+         )
+)
 
-# Function that takes in DNA sequences,
-# split each nucleotide into separate column
-# And translate the nucleotide to binaryform
-onehotencodingfunction <- function(seqs) {
+# Create generic functions
+setGeneric("OneHotEncoding", function(object, sequence) {
+  standardGeneric("OneHotEncoding")
+})
+setGeneric("insert_data_to_db", function(object, data, datatable, db_connection, append, overwrite=FALSE) {
+  standardGeneric("insert_data_to_db")
+})
+setGeneric("update_db", function(object) {
+  standardGeneric("update_db")
+})
+
+# Create methods -> Functions
+# Method that takes in DNA sequences, split each nucleotide into separate column And translate the nucleotide to binaryform
+setMethod("OneHotEncoding", "Dataformation_Insertion_Db", function(object) {
   # Split each sequence into individual characters
-  split_seqs <- strsplit(seqs, "")
-
+  split_seqs <- strsplit(object@sequences, "")
   # Number of positions (should be 20)
   n_pos <- length(split_seqs[[1]])
-
   # Preallocate list of columns, vectors made of lists
   columns <- vector("list", n_pos)
-
   # For each position 1:20, extract that base from all sequences and one-hot encode,
   for (nucleotide in 1:n_pos) {
     # Go through position i for each row -> function(row)
-    bases_at_i <- sapply(split_seqs, function(row) row[nucleotide])
-    columns[[nucleotide]] <- one_hot_map[bases_at_i]
+    bases <- sapply(split_seqs, function(row) row[nucleotide])
+    columns[[nucleotide]] <- object@one_hot_map[bases]
   }
-
   # Converting list into data frame and combine with name columns
   df <- as.data.frame(columns, stringsAsFactors = FALSE)
   colnames(df) <- paste0("nt", 1:n_pos)
+  
+  # Store the onehotencoding results
+  object@onehotresults <- df
+  return (object)
+})
 
-  return(df)
-}
+# Method to insert data from dataframes into database
+setMethod("insert_data_to_db", "Dataformation_Insertion_Db", function(object, overwrite =FALSE) {
+  dbWriteTable(conn = object@db, 
+               name = object@datatable, 
+               value = object@data,
+               overwrite = overwrite,
+               append = object@append)
+})
 
-# Call on the function using the DNA seqeunces in the GaCKO table
-onehotresult <- onehotencodingfunction(gecko_df$Sequence)
+# Method that uses basic UPDATE commands to update a database
+setMethod ("update_db", "Dataformation_Insertion_Db", function(object) {
+  
+  query <- glue("
+                UPDATE {object@datatable}
+                SET {object@set_command}
+                WHERE {object@where_command}
+                ")
+  dbExecute(object@db,query)
+  
+})
+
+########################## One hot encoding ####################################
+
+# Construct a new object for onehotencoding
+onehotencoding <- new("Dataformation_Insertion_Db", 
+                      db = conn,
+                      sequences = gecko_df$Sequence)
+
+# Call on the method för onehotencoding
+onehotencoding <- OneHotEncoding(onehotencoding)
 # Add onehotresult to the gecko dataframe
-gecko_df[,3:22] <- onehotresult
-
-
-########################## GC content ################################
-
+gecko_df[,3:22] <- onehotencoding@onehotresults
 # Add GC content to the gecko dataframe
 gecko_df <- gecko_df %>%
   mutate(gc_content = str_count(Sequence, "[GCgc]") / str_length(Sequence))
-
-
-####################### Insert to database #############################
-
-# Function to insert data from dataframes into database
-insert_data_to_db <- function(data, datatable, db_connection, overwrite=FALSE) {
-  
-  dbWriteTable(db_connection, datatable, data, overwrite=overwrite, append =!overwrite)
-  
-}
-
-# Add dataframes to database
-insert_data_to_db (sgRNA_data[, c("sgRNAid", "gene_name", "LFC", "score")],
-                   "sgRNA_data",
-                   conn)
-insert_data_to_db (gecko_df,
-                   "GeCKO",
-                   conn
-)
 
 
 ############################## RNA-seq data ####################################
@@ -104,63 +140,94 @@ ensemble_connect <- useEnsembl(biomart = "genes", dataset = "hsapiens_gene_ensem
 attribute <- listAttributes(ensemble_connect)
 # Translate the Ensemble Gene Id to the corresponding gene name
 external_gene_names <- getBM(
-                              attributes = c("ensembl_gene_id", "external_gene_name"),
-                              filters ="ensembl_gene_id",
-                              values = ensemble_ids$geneName,
-                              mart = ensemble_connect
-                              )
+  attributes = c("ensembl_gene_id", "external_gene_name"),
+  filters ="ensembl_gene_id",
+  values = ensemble_ids$geneName,
+  mart = ensemble_connect
+)
 # Merge the dataframes so the genename has its corresponding fpkm.counted value
-merged_df <- merge(external_gene_names,
-                   ensemble_ids[, c("geneName", "fpkm.counted")],
-                   by.x = "ensembl_gene_id",
-                   by.y = "geneName")
+merged_RNA_df <- merge(external_gene_names,
+                       ensemble_ids[, c("geneName", "fpkm.counted")],
+                       by.x = "ensembl_gene_id",
+                       by.y = "geneName")
+merged_RNA_df  <- rename(merged_RNA_df , ensemble_id = ensembl_gene_id, gene_name = external_gene_name, fpkm_counted=fpkm.counted)
 
 
-merged_df <- rename(merged_df, ensemble_id = ensembl_gene_id, gene_name = external_gene_name, fpkm_counted=fpkm.counted)
-# Add to database
-insert_data_to_db (merged_df,
-                   "RNA_seq",
-                   conn)
+########################## Insert into database ################################
 
-
-######################## Updated values in database ########################
-
-# Add binary data to LFC_binary depending on hte threshold for LFC
-dbExecute(conn,
-          "
-                UPDATE sgRNA_data
-                SET LFC_binary = 1
-                WHERE ABS(LFC) > 1
-                "
+# Construct a new object for Inserting sgRNA data to database table sgRNA_data
+insertiontodb <- new("Dataformation_Insertion_Db",
+                     db = conn,
+                     datatable = "sgRNA_data",
+                     data = sgRNA_data[, c("sgRNAid", "gene_name", "LFC", "score")],
+                     append = TRUE
 )
-dbExecute(conn,
-          "
-                UPDATE sgRNA_data
-                SET LFC_binary = 0
-                WHERE ABS(LFC) = 1 OR ABS(LFC) < 1
-                "
+
+# Call on the method for insertiontodb
+insert_data_to_db(insertiontodb)
+
+# Construct a new object for Inserting gecko data to database table GeCKO
+insertiontodb <- new("Dataformation_Insertion_Db",
+                     db = conn,
+                     datatable = "GeCKO",
+                     data = gecko_df,
+                     append = TRUE
 )
+insert_data_to_db(insertiontodb)
+
+#Construct a new object for Inserting RNA data to database table RNA_seq
+insertiontodb <- new("Dataformation_Insertion_Db",
+                     db = conn,
+                     datatable = "RNA_seq",
+                     data = merged_RNA_df,
+                     append = TRUE
+)
+insert_data_to_db(insertiontodb)
+
+#################### Updating existing data in database ########################
+
+# Construct new objects for updating the database
+updatedb <- new("Dataformation_Insertion_Db", 
+                db = conn,
+                datatable = "sgRNA_data",
+                set_command = "LFC_binary = 1",
+                where_command = "ABS(LFC) > 1")
+# Call on the method for updating the database 
+update_db(updatedb)
+
+updatedb <- new("Dataformation_Insertion_Db", 
+                db = conn,
+                datatable = "sgRNA_data",
+                set_command = "LFC_binary = 0",
+                where_command = "ABS(LFC) = 1 OR ABS(LFC) < 1")
+
+update_db(updatedb)
 
 # Choose threshold... In RShiny let the user change this threshold
-dbExecute(conn,
-          "
-                UPDATE RNA_seq
-                SET fpkm_binary = 1
-                WHERE fpkm_counted > 3
-                "
-)
-dbExecute(conn,
-          "
-                UPDATE RNA_seq
-                SET fpkm_binary = 0
-                WHERE fpkm_counted < 3 OR fpkm_counted = 3
-                "
-)
+updatedb <- new("Dataformation_Insertion_Db", 
+                db = conn,
+                datatable = "RNA_seq",
+                set_command = "fpkm_binary = 1",
+                where_command = "fpkm_counted > 3")
+
+update_db(updatedb)
+
+updatedb <- new("Dataformation_Insertion_Db", 
+                db = conn,
+                datatable = "RNA_seq",
+                set_command = "fpkm_binary = 0",
+                where_command = "fpkm_counted < 3 OR fpkm_counted = 3")
+
+update_db(updatedb)
+
+
 
 # Peek into database
 head(dbReadTable(conn, "sgRNA_data"))
 head(dbReadTable(conn, "GeCKO"))
 head(dbReadTable(conn, "RNA_seq"))
+
+
 
 
 
@@ -214,180 +281,6 @@ ggplot(combined_df, aes(x = category, y = LFC, color = category)) +
                                 "Activated Genes" = "green")) +
   theme(legend.position = "none")  # hide legend if you want
 
-
-
-
-
-
-####################### S4 class ##################################
-
-# Define the S4 class -> Define what the class should include
-# Define prototype -> If nothing is sent in go to defualt
-setClass("Dataformation_Insertion_Db",
-         slots = list(
-           db = "DBIConnection",
-           sequences = "character",
-           data = "data.frame",
-           onehotresults = "data.frame",
-           one_hot_map = "character",
-           datatable = "character",
-           append = "logical",
-           set_command = "character",
-           where_command = "character"
-         ),
-         prototype = list(
-           db = NULL,
-           sequences = character(),
-           data = data.frame(),
-           onehotresults = data.frame(),
-           one_hot_map = c(A="0001", C="0010", G="0100", T="1000"),
-           datatable = character(),
-           append = TRUE,
-           set_command = character(),
-           where_command = character()
-         )
-)
-
-# Create generic functions
-setGeneric("OneHotEncoding", function(object, sequence) {
-  standardGeneric("OneHotEncoding")
-})
-
-setGeneric("insert_data_to_db", function(object, data, datatable, db_connection, append, overwrite=FALSE) {
-  standardGeneric("insert_data_to_db")
-})
-
-setGeneric("update_db", function(object) {
-  standardGeneric("update_db")
-  
-})
-
-
-# Create methods -> Functions
-
-# Function that takes in DNA sequences, split each nucleotide into separate column And translate the nucleotide to binaryform
-setMethod("OneHotEncoding", "Dataformation_Insertion_Db", function(object) {
-  # Split each sequence into individual characters
-  split_seqs <- strsplit(object@sequences, "")
-  # Number of positions (should be 20)
-  n_pos <- length(split_seqs[[1]])
-  # Preallocate list of columns, vectors made of lists
-  columns <- vector("list", n_pos)
-  # For each position 1:20, extract that base from all sequences and one-hot encode,
-  for (nucleotide in 1:n_pos) {
-    # Go through position i for each row -> function(row)
-    bases <- sapply(split_seqs, function(row) row[nucleotide])
-    columns[[nucleotide]] <- object@one_hot_map[bases]
-  }
-  # Converting list into data frame and combine with name columns
-  df <- as.data.frame(columns, stringsAsFactors = FALSE)
-  colnames(df) <- paste0("nt", 1:n_pos)
-  
-  # Store the onehotencoding results
-  object@onehotresults <- df
-  return (object)
-  
-})
-
-# Function to insert data from dataframes into database
-setMethod("insert_data_to_db", "Dataformation_Insertion_Db", function(object, overwrite =FALSE) {
-  dbWriteTable(conn = object@db, 
-               name = object@datatable, 
-               value = object@data,
-               overwrite = overwrite,
-               append = object@append)
-})
-
-setMethod ("update_db", "Dataformation_Insertion_Db", function(object) {
-  
-  query <- glue("
-                UPDATE {object@datatable}
-                SET {object@set_command}
-                WHERE {object@where_command}
-                ")
-  dbExecute(object@db,query)
-  
-})
-
-
-# Construct a new object for onehotencoding
-onehotencoding <- new("Dataformation_Insertion_Db", 
-                      db = conn,
-                      sequences = gecko_df$Sequence)
-
-# Call on the method för onehotencoding
-onehotencoding <- OneHotEncoding(onehotencoding)
-# Add onehotresult to the gecko dataframe
-gecko_df[,3:22] <- onehotencoding@onehotresults
-# Add GC content to the gecko dataframe
-gecko_df <- gecko_df %>%
-  mutate(gc_content = str_count(Sequence, "[GCgc]") / str_length(Sequence))
-
-
-
-# Construct a new object for Inserting sgRNA data to database table sgRNA_data
-insertiontodb <- new("Dataformation_Insertion_Db",
-                     db = conn,
-                     datatable = "sgRNA_data",
-                     data = sgRNA_data[, c("sgRNAid", "gene_name", "LFC", "score")],
-                     append = TRUE
-                     )
-
-# Call on the method for insertiontodb
-insert_data_to_db(insertiontodb)
-
-# Construct a new object for Inserting gecko data to database table GeCKO
-insertiontodb <- new("Dataformation_Insertion_Db",
-                     db = conn,
-                     datatable = "GeCKO",
-                     data = gecko_df,
-                     append = TRUE
-                     )
-# Call on the method for insertiontodb
-insert_data_to_db(insertiontodb)
-
-
-
-# Construct new objects for updating the database
-updatedb <- new("Dataformation_Insertion_Db", 
-                      db = conn,
-                      datatable = "sgRNA_data",
-                      set_command = "LFC_binary = 1",
-                      where_command = "ABS(LFC) > 1")
-# Call on the method for updating the database 
-update_db(updatedb)
-
-updatedb <- new("Dataformation_Insertion_Db", 
-                db = conn,
-                datatable = "sgRNA_data",
-                set_command = "LFC_binary = 0",
-                where_command = "ABS(LFC) = 1 OR ABS(LFC) < 1")
-
-update_db(updatedb)
-
-# Choose threshold... In RShiny let the user change this threshold
-updatedb <- new("Dataformation_Insertion_Db", 
-                db = conn,
-                datatable = "RNA_seq",
-                set_command = "fpkm_binary = 1",
-                where_command = "fpkm_counted > 3")
-
-update_db(updatedb)
-
-updatedb <- new("Dataformation_Insertion_Db", 
-                db = conn,
-                datatable = "RNA_seq",
-                set_command = "fpkm_binary = 0",
-                where_command = "fpkm_counted < 3 OR fpkm_counted = 3")
-
-update_db(updatedb)
-
-
-
-# Peek into database
-head(dbReadTable(conn, "sgRNA_data"))
-head(dbReadTable(conn, "GeCKO"))
-head(dbReadTable(conn, "RNA_seq"))
 
 
 # Disconnect from database
