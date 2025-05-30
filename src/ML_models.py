@@ -1,11 +1,20 @@
 
 # Ta in rätt paket
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
-
+from sklearn import metrics
+import matplotlib.pyplot as plt
 import sqlite3
 import pandas as pd
 import numpy as np
+import shap
+
+
+
+
+
+
 
 # Importera datan från databasen och dela upp i x och y.
 connect = sqlite3.connect("src/DatabasLite.db")
@@ -26,7 +35,7 @@ y = np.ravel(y)
 
 cursor.execute(
               f'''
-              SELECT nt1, nt2, nt3, nt4, nt5, nt6, nt7, nt8, nt9, nt10, nt11, nt12, nt13, nt14, nt15, nt16 ,nt17 ,nt18 nt19, nt20
+              SELECT nt1, nt2, nt3, nt4, nt5, nt6, nt7, nt8, nt9, nt10, nt11, nt12, nt13, nt14, nt15, nt16 ,nt17 ,nt18 nt19, nt20, gc_content
               FROM sgRNA_data 
               INNER JOIN GeCKO
               WHERE sgRNA_data.sgRNAid=GeCKO.UID
@@ -39,8 +48,6 @@ connect.close()
 
 
 # Dela upp datan i train, validation, test.
-from sklearn.model_selection import train_test_split
-
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state = 42)
 
 X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.2, random_state=42)
@@ -53,7 +60,6 @@ model_regression = RandomForestRegressor(criterion='squared_error', random_state
 model_regression.fit(X_train, y_train)
 
 # Make predicitons and test-val-loss-plot.
-from sklearn import metrics
 
 pred = model_regression.predict(X_val)
 
@@ -72,12 +78,7 @@ print('R-squared:', metrics.r2_score(y_val, pred))
 
 
 # Ta in rätt paket
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import train_test_split
 
-import sqlite3
-import pandas as pd
-import numpy as np
 
 # Importera datan från databasen och dela upp i x och y.
 connect = sqlite3.connect("src/DatabasLite.db")
@@ -112,7 +113,7 @@ connect.close()
 
 
 # Dela upp datan i train, validation, test.
-from sklearn.model_selection import train_test_split
+
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state = 42, stratify=y)
 X_train, X_val, y_train, y_val = train_test_split(X_train, y_train, test_size=0.2, random_state=42, stratify=y_train)
@@ -125,7 +126,6 @@ model_classifier = RandomForestClassifier(criterion='gini', random_state = 42)
 model_classifier.fit(X_train, y_train)
 
 # Make predicitons and test-val-loss-plot.
-from sklearn import metrics
 
 pred = model_classifier.predict(X_val)
 
@@ -155,7 +155,7 @@ print('Confusion:', metrics.confusion_matrix(y_val, pred))
 
 
 ####### Plots #######
-import matplotlib.pyplot as plt
+
 
 plt.figure(figsize=(5,5))
 plt.scatter(y_val,pred)
@@ -173,7 +173,7 @@ plt.show()
 ######### SHAP ########
 
 
-import shap
+
 explainer = shap.Explainer(model)
 shap_values = explainer(np.array(X_val))
 
