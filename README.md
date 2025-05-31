@@ -67,25 +67,28 @@ Import os
 os.chdir("/home/rstudio/projekt/src")
 ```
 
-### License
-This package is licensed under the MIT License. 
+### Usage
+To run the code, follow the steps
+1. Download the given files, see instructions below in Data files.
+2. Create the SQLite database
+```bash
+python src/DatabasLite.py
+```
+3. Format the data and add to the database
+```bash
+Rscript src/Data_formatting.R
+```
+4. Run the Machiner learning code
+```bash
+Rscript src/Machine_learning.R
+```
+5. Visualize the results???
+INSERT INFOR
 
-See the LICENSE file for details.
 
 
-
-### Authors
-Dennis Harding – dennis.harding2@gmail.com
-
-Moa Ögren – moaa.ogren@gmail.com
-
-### Course
-This package was developed for the Advanced Bioinformatics course at 
-Umeå University.
-
-<<<<<<< HEAD
 ### Data files
-If one wants to check the data used in the project, one can dowload the files at the following URLs:
+Download the used files and save to a data folder in the PkgAvaProj project. Download the files at the following URLs:
 
 sgRNA_data.xlsx
 
@@ -101,8 +104,19 @@ RNA_seq_data.gz
     https://ftp.ncbi.nlm.nih.gov/geo/series/GSE169nnn/GSE169614/suppl/GSE169614%5F52677%5Fstar.Homo%5Fsapiens.GRCh38.78.htseq.counts.tab.gz
 
 
-=======
->>>>>>> main
-### Contributing
+### License
+This package is licensed under the MIT License. 
+See the LICENSE file for details.
 
+
+### Authors
+Dennis Harding – dennis.harding2@gmail.com
+Moa Ögren – moaa.ogren@gmail.com
+
+### Course
+This package was developed for the Advanced Bioinformatics course at 
+Umeå University.
+
+
+### Contributing
 We DO welcome contributions.
