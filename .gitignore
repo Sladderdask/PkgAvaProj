@@ -8,5 +8,6 @@ inst/doc
 *.RDataTmp*
 *.DS_Store
 *.Rproj*
+*.db
 .Rproj.user
 docs

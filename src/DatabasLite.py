@@ -4,8 +4,9 @@ import os
 
 definition = """
 
-CREATE TABLE IF NOT EXISTS sgRNA_data(
+CREATE TABLE sgRNA_data(
   sgRNAid VARCHAR PRIMARY KEY,
+  gene_name TEXT,
   LFC REAL,
   score REAL,
   LFC_binary INTEGER
@@ -34,6 +35,7 @@ CREATE TABLE GeCKO(
   nt18 TEXT, 
   nt19 TEXT, 
   nt20 TEXT,
+  gc_content REAL,
   FOREIGN KEY (UID) REFERENCES sgRNA_DATA (sgRNAid)
   
 );
