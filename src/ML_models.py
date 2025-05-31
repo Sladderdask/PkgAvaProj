@@ -11,11 +11,6 @@ import numpy as np
 import shap
 
 
-
-
-
-
-
 # Importera datan från databasen och dela upp i x och y.
 connect = sqlite3.connect("src/DatabasLite.db")
 
