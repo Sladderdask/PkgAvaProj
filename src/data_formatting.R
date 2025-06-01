@@ -210,11 +210,13 @@ updatedb <- new("Dataformation_Insertion_Db",
 update_db(updatedb)
 
 # Choose threshold... In RShiny let the user change this threshold
+th <- 7
 updatedb <- new("Dataformation_Insertion_Db",
                 db = conn,
                 datatable = "RNA_seq",
                 set_command = "fpkm_binary = 1",
-                where_command = "fpkm_counted > 3")
+                where_command = glue("fpkm_counted > {th}")
+                )
 
 update_db(updatedb)
 
@@ -222,7 +224,8 @@ updatedb <- new("Dataformation_Insertion_Db",
                 db = conn,
                 datatable = "RNA_seq",
                 set_command = "fpkm_binary = 0",
-                where_command = "fpkm_counted < 3 OR fpkm_counted = 3")
+                where_command = glue("fpkm_counted <= {th}")
+                )
 
 update_db(updatedb)
 
