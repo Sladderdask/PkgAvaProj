@@ -42,15 +42,15 @@ ui <- fluidPage(
 
     # NEW TAB - RNA Threshold Plot
     tabPanel("RNA Threshold Plot",
-             sidebarLayout(
-               sidebarPanel(
-                 sliderInput("th", "FPKM Threshold:", min = 0, max = 20, value = 3),
-                 sliderInput("alpha", "Alpha val", min = 0.01, max = 1, value = 0.5, step = 0.01)
-               ),
-               mainPanel(
-                 plotOutput("rna_plot")
-               )
-             )
+      sidebarLayout(
+        sidebarPanel(
+          sliderInput("th", "FPKM Threshold:", min = 0, max = 20, value = 3),
+          sliderInput("alpha", "opacity", min = 0.005, max = 0.1, value = 0.05, step = 0.005)
+        ),
+        mainPanel(
+          plotOutput("rna_plot")
+         )
+       )
     )
   )
 )
@@ -64,20 +64,20 @@ server <- function(input, output, session) {
     if (tolower(input$user_name) %in% Valid_users) {
       if (!tabs_added()) {
         insertTab(inputId = "main_tabs",
-                  tabPanel("Welcome",
-                           sidebarLayout(
-                             sidebarPanel(
-                               h3("Welcome, admin!"),
-                               actionButton("lock", "Lock")
-                             ),
-                             mainPanel(
-                               textOutput("hello")
-                             )
-                           )
-                  ),
-                  target = "Authentication",
-                  position = "after",
-                  select = TRUE
+          tabPanel("Welcome",
+            sidebarLayout(
+              sidebarPanel(
+                h3("Welcome, admin!"),
+                actionButton("lock", "Lock")
+              ),
+              mainPanel(
+                textOutput("hello")
+              )
+            )
+          ),
+          target = "RNA Threshold Plot",
+          position = "after",
+          select = TRUE
         )
         tabs_added(TRUE)
       }
