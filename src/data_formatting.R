@@ -42,6 +42,7 @@ setClass("Dataformation_Insertion_Db",
            one_hot_map = "character",
            datatable = "character",
            append = "logical",
+           overwrite = "logical",
            set_command = "character",
            where_command = "character"
          ),
@@ -53,6 +54,7 @@ setClass("Dataformation_Insertion_Db",
            one_hot_map = c(A="0001", C="0010", G="0100", T="1000"),
            datatable = character(),
            append = TRUE,
+           overwrite = TRUE,
            set_command = character(),
            where_command = character()
          )
@@ -87,7 +89,7 @@ setMethod("OneHotEncoding", "Dataformation_Insertion_Db", function(object) {
   # Converting list into data frame and combine with name columns
   df <- as.data.frame(columns, stringsAsFactors = FALSE)
   colnames(df) <- paste0("nt", 1:n_pos)
-  
+
   # Store the onehotencoding results
   object@onehotresults <- df
   return (object)
@@ -95,29 +97,29 @@ setMethod("OneHotEncoding", "Dataformation_Insertion_Db", function(object) {
 
 # Method to insert data from dataframes into database
 setMethod("insert_data_to_db", "Dataformation_Insertion_Db", function(object, overwrite =FALSE) {
-  dbWriteTable(conn = object@db, 
-               name = object@datatable, 
+  dbWriteTable(conn = object@db,
+               name = object@datatable,
                value = object@data,
-               overwrite = overwrite,
+               overwrite = object@overwrite,
                append = object@append)
 })
 
 # Method that uses basic UPDATE commands to update a database
 setMethod ("update_db", "Dataformation_Insertion_Db", function(object) {
-  
+
   query <- glue("
                 UPDATE {object@datatable}
                 SET {object@set_command}
                 WHERE {object@where_command}
                 ")
   dbExecute(object@db,query)
-  
+
 })
 
 ########################## One hot encoding ####################################
 
 # Construct a new object for onehotencoding
-onehotencoding <- new("Dataformation_Insertion_Db", 
+onehotencoding <- new("Dataformation_Insertion_Db",
                       db = conn,
                       sequences = gecko_df$Sequence)
 
@@ -130,6 +132,7 @@ gecko_df <- gecko_df %>%
   mutate(gc_content = str_count(Sequence, "[GCgc]") / str_length(Sequence))
 
 
+head(gecko_df)
 ############################## RNA-seq data ####################################
 
 # Check ensemble choices
@@ -160,7 +163,8 @@ insertiontodb <- new("Dataformation_Insertion_Db",
                      db = conn,
                      datatable = "sgRNA_data",
                      data = sgRNA_data[, c("sgRNAid", "gene_name", "LFC", "score")],
-                     append = TRUE
+                     append = TRUE,
+                     overwrite = FALSE
 )
 
 # Call on the method for insertiontodb
@@ -171,7 +175,8 @@ insertiontodb <- new("Dataformation_Insertion_Db",
                      db = conn,
                      datatable = "GeCKO",
                      data = gecko_df,
-                     append = TRUE
+                     append = FALSE,
+                     overwrite = TRUE
 )
 insert_data_to_db(insertiontodb)
 
@@ -180,22 +185,23 @@ insertiontodb <- new("Dataformation_Insertion_Db",
                      db = conn,
                      datatable = "RNA_seq",
                      data = merged_RNA_df,
-                     append = TRUE
+                     append = TRUE,
+                     overwrite = FALSE
 )
 insert_data_to_db(insertiontodb)
 
 #################### Updating existing data in database ########################
 
 # Construct new objects for updating the database
-updatedb <- new("Dataformation_Insertion_Db", 
+updatedb <- new("Dataformation_Insertion_Db",
                 db = conn,
                 datatable = "sgRNA_data",
                 set_command = "LFC_binary = 1",
                 where_command = "ABS(LFC) > 1")
-# Call on the method for updating the database 
+# Call on the method for updating the database
 update_db(updatedb)
 
-updatedb <- new("Dataformation_Insertion_Db", 
+updatedb <- new("Dataformation_Insertion_Db",
                 db = conn,
                 datatable = "sgRNA_data",
                 set_command = "LFC_binary = 0",
@@ -204,7 +210,7 @@ updatedb <- new("Dataformation_Insertion_Db",
 update_db(updatedb)
 
 # Choose threshold... In RShiny let the user change this threshold
-updatedb <- new("Dataformation_Insertion_Db", 
+updatedb <- new("Dataformation_Insertion_Db",
                 db = conn,
                 datatable = "RNA_seq",
                 set_command = "fpkm_binary = 1",
@@ -212,7 +218,7 @@ updatedb <- new("Dataformation_Insertion_Db",
 
 update_db(updatedb)
 
-updatedb <- new("Dataformation_Insertion_Db", 
+updatedb <- new("Dataformation_Insertion_Db",
                 db = conn,
                 datatable = "RNA_seq",
                 set_command = "fpkm_binary = 0",
@@ -237,13 +243,13 @@ head(dbReadTable(conn, "RNA_seq"))
 # More or less no difference between threshold 1 and 3
 
 
-all_genes <- dbGetQuery(conn, "SELECT RNA_seq.gene_name, LFC 
+all_genes <- dbGetQuery(conn, "SELECT RNA_seq.gene_name, LFC
                              FROM GeCKO
                              INNER JOIN sgRNA_data ON sgRNA_data.sgRNAid = GeCKO.UID
                              INNER JOIN RNA_seq ON RNA_seq.gene_name = sgRNA_data.gene_name
                              ")
 
-not_activated_genes <- dbGetQuery(conn, "SELECT RNA_seq.gene_name, LFC 
+not_activated_genes <- dbGetQuery(conn, "SELECT RNA_seq.gene_name, LFC
                              FROM GeCKO
                              INNER JOIN sgRNA_data ON sgRNA_data.sgRNAid = GeCKO.UID
                              INNER JOIN RNA_seq ON RNA_seq.gene_name = sgRNA_data.gene_name
@@ -276,8 +282,8 @@ ggplot(combined_df, aes(x = category, y = LFC, color = category)) +
   labs(title = "Scatterplot of Log Fold Change values",
        x = "Gene Category",
        y = "LFC") +
-  scale_color_manual(values = c("All Genes" = "blue", 
-                                "Not Activated Genes" = "red", 
+  scale_color_manual(values = c("All Genes" = "blue",
+                                "Not Activated Genes" = "red",
                                 "Activated Genes" = "green")) +
   theme(legend.position = "none")  # hide legend if you want
 
@@ -285,4 +291,5 @@ ggplot(combined_df, aes(x = category, y = LFC, color = category)) +
 
 # Disconnect from database
 dbDisconnect(conn)
+
 
