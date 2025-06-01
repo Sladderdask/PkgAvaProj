@@ -9,5 +9,6 @@ inst/doc
 *.DS_Store
 *.Rproj*
 *.db
+*.gz
 .Rproj.user
 docs
