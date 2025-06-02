@@ -127,9 +127,17 @@ No license is required. However, for jurisdictions or organizations that require
 For more information, see: https://www.sqlite.org/copyright.html
 
 ## DBI
-Licensed under the GNU General Public License v3.0 (GPL-3.0)  
+Licensed under the GNU Lesser General Public License v3.0 (GPL-3.0)  
 
-      https://license.md/licenses/gnu-general-public-license-v3-0/
+Copyright (C) 1991, 1999 Free Software Foundation, Inc.
+51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+Everyone is permitted to copy and distribute verbatim copies
+of this license document, but changing it is not allowed.
+
+[This is the first released version of the Lesser GPL.  It also counts
+ as the successor of the GNU Library Public License, version 2, hence
+ the version number 2.1.]
 
 ### matplotliv
 **Licensed under Matplotlib License**
