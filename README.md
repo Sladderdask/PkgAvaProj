@@ -26,7 +26,7 @@ To install the development version of the package from GitHub:
 install.packages("devtools") 
 
 # Install the package
-devtools::install_github("Sladderdask/AvanceradBioinformatikPackage")
+devtools::install_github("Sladderdask/AdvancedBioinformaticPackage")
 ```
 #### 🧪 Example code
 ```r
