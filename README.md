@@ -61,8 +61,7 @@ docker run -d --name crispr_ko_screening -p 8787:8787 -e PASSWORD=YOURPASSWORD c
 #### 🧭 To run the code
 Change the working directory using:
 ```bash
-import os
-os.chdir("/home/rstudio/projekt")
+setwd("/home/rstudio/projekt")
 ```
 
 ## 📁 Data files
