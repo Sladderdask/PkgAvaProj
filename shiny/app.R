@@ -20,7 +20,10 @@ ui <- fluidPage(
     tabPanel("PNG Viewer",
       sidebarLayout(
         sidebarPanel(
-          selectInput("selected_image", "Choose an image:", choices = list.files("shiny/www", pattern = "\\.png$"))
+          selectInput("selected_image",
+                      "Choose an image:",
+                      choices = list.files("shiny/www",
+                                           pattern = "\\.png$"))
         ),
         mainPanel(
           uiOutput("image_display")
@@ -44,8 +47,10 @@ ui <- fluidPage(
     tabPanel("RNA Threshold Plot",
       sidebarLayout(
         sidebarPanel(
-          sliderInput("th", "FPKM Threshold:", min = 0, max = 20, value = 3),
-          sliderInput("alpha", "opacity", min = 0.005, max = 0.1, value = 0.05, step = 0.005)
+          sliderInput("th", "FPKM Threshold:", min = 0,
+                      max = 20, value = 3),
+          sliderInput("alpha", "opacity", min = 0.005,
+                      max = 0.1, value = 0.05, step = 0.005)
         ),
         mainPanel(
           plotOutput("rna_plot")
@@ -102,7 +107,8 @@ server <- function(input, output, session) {
   # Plot viewer image output
   output$image_display <- renderUI({
     req(input$selected_image)
-    tags$img(src = paste0("imgs/", input$selected_image), style = "max-width:100%; height:auto;")
+    tags$img(src = paste0("imgs/", input$selected_image),
+             style = "max-width:100%; height:auto;")
   })
 
   # Reactive data read
@@ -136,8 +142,10 @@ server <- function(input, output, session) {
 
   # Plot
   output$rna_plot <- renderPlot({
-    ggplot(rna_filtered(), aes(x = category, y = LFC, color = category)) +
-      geom_jitter(width = 0.2, height = 0, size = 2, alpha = input$alpha) +
+    ggplot(rna_filtered(), aes(x = category, y = LFC,
+                               color = category)) +
+      geom_jitter(width = 0.2, height = 0, size = 2,
+                  alpha = input$alpha) +
       theme_minimal() +
       labs(title = paste("LFC values grouped by RNA-seq threshold >", input$th),
            x = "Gene Category",
