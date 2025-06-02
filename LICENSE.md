@@ -117,6 +117,20 @@ Licensed under the GNU General Public License v3.0 (GPL-3.0)
 
 See the MIT License description under **MIT License**
 
+### SQLite
+SQLite is in the **Public Domain**.
+
+All code and documentation in SQLite has been dedicated to the public domain by the authors. This means anyone is free to copy, modify, publish, use, compile, sell, or distribute the original SQLite code for any purpose, commercial or non-commercial, and by any means.
+
+No license is required. However, for jurisdictions or organizations that require legal affirmation, a Warranty of Title can be purchased from Hwaci (the company behind SQLite). This provides legal documentation affirming the authorship and public domain status of SQLite.
+
+For more information, see: https://www.sqlite.org/copyright.html
+
+## DBI
+Licensed under the GNU General Public License v3.0 (GPL-3.0)  
+
+      https://license.md/licenses/gnu-general-public-license-v3-0/
+
 ### matplotliv
 **Licensed under Matplotlib License**
 
