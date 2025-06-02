@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 Package: PkgAvaProj
-=======
-Package: AdvancedBioinformaticPackage
->>>>>>> eb94be6691be046665abc60ddf14fb35df22443c
 Title: Tools for Advanced Bioinformatics Course
 Version: 0.1.0
 Authors@R:
