@@ -175,8 +175,8 @@ insertiontodb <- new("Dataformation_Insertion_Db",
                      db = conn,
                      datatable = "GeCKO",
                      data = gecko_df,
-                     append = FALSE,
-                     overwrite = TRUE
+                     append = TRUE,
+                     overwrite = FALSE
 )
 insert_data_to_db(insertiontodb)
 

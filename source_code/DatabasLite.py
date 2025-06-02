@@ -35,13 +35,12 @@ CREATE TABLE GeCKO(
   nt18 TEXT, 
   nt19 TEXT, 
   nt20 TEXT,
-  gc_content REAL,
-  FOREIGN KEY (UID) REFERENCES sgRNA_DATA (sgRNAid)
+  gc_content REAL
   
 );
 
 CREATE TABLE RNA_seq(
-  ensemble_id TEXT,
+  ensemble_id TEXT PRIMARY KEY,
   gene_name TEXT,
   fpkm_counted REAL,
   fpkm_binary INTEGER

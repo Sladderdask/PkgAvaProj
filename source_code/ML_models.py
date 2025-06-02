@@ -30,14 +30,13 @@ y = np.ravel(y)
 
 cursor.execute(
               f'''
-              SELECT nt1, nt2, nt3, nt4, nt5, nt6, nt7, nt8, nt9, nt10, nt11, nt12, nt13, nt14, nt15, nt16 ,nt17 ,nt18 nt19, nt20, gc_content
+              SELECT nt1, nt2, nt3, nt4, nt5, nt6, nt7, nt8, nt9, nt10, nt11, nt12, nt13, nt14, nt15, nt16 ,nt17 ,nt18, nt19, nt20, gc_content
               FROM sgRNA_data 
               INNER JOIN GeCKO
               WHERE sgRNA_data.sgRNAid=GeCKO.UID
               ''')
 
 X = cursor.fetchall()
-X
 connect.close()
 
 
@@ -96,7 +95,7 @@ y = np.ravel(y)
 
 cursor.execute(
               f'''
-              SELECT nt1, nt2, nt3, nt4, nt5, nt6, nt7, nt8, nt9, nt10, nt11, nt12, nt13, nt14, nt15, nt16 ,nt17 ,nt18 nt19, nt20
+              SELECT nt1, nt2, nt3, nt4, nt5, nt6, nt7, nt8, nt9, nt10, nt11, nt12, nt13, nt14, nt15, nt16 ,nt17 ,nt18, nt19, nt20, gc_content
               FROM sgRNA_data 
               INNER JOIN GeCKO
               WHERE sgRNA_data.sgRNAid=GeCKO.UID
@@ -167,17 +166,18 @@ plt.show()
 
 ######### SHAP ########
 
-
-
-explainer = shap.Explainer(model)
+explainer = shap.TreeExplainer(model_regression)
 shap_values = explainer(np.array(X_val))
 
+with open("shap_values2.pickle", "wb") as handle:
+    pickle.dump(shap_values, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-np.shape(shap_values.values)
+
+
 
 # shap.plot.summary -> Snygg plott
 
-shap.plots.waterfall(shap_values[0])
+#shap.plots.waterfall(shap_values[0])
 
 
 
