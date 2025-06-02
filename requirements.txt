@@ -1,6 +1,8 @@
 # For machine learning
 scikit-learn
-tensorflow
 
 # SHAP-scores
 shap
+
+# For plotting
+matplotlib
