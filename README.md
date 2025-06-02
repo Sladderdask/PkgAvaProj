@@ -1,6 +1,5 @@
-# 📦 AvanceradBioinformatikPackage
-
-**AvanceradBioinformatikPackage** 
+# 📦 AvancedBioinformaticPackage
+**AvancedBioinformaticPackage** 
 provides tools and workflows for data preprocessing and analysis as 
 part of the *Advanced Bioinformatics* course at Umeå University. 
 The main purpose if this package is on identifying optimal spacer 
