@@ -16,13 +16,12 @@ git clone URL
 ``` 
 
 ### 💻 Local installation
-Install the packages using
+Install the packages using the following commands:
 ```bash
 Rscript requirements.R
 pip install -r requirements.txt
 ```
 To install the development version of the package from GitHub:
-
 ```r
 # If not already installed devtools, run:
 install.packages("devtools") 
@@ -31,7 +30,6 @@ install.packages("devtools")
 devtools::install_github("Sladderdask/AvanceradBioinformatikPackage")
 ```
 #### 🧪 Example code
-
 ```r
 #example usage
 library(AvanceradbioinformatikPackage)
@@ -47,30 +45,25 @@ found in the downloaded repository.
 
 #### 🏗️ Build Docker image
 To build the Docker image, run the following command in the project 
-root directory
-
+root directory:
 ```bash
 docker build -t crispr_ko_screening .
 ```
 
 #### ▶️ Run the container
-To run the container, run the following commands
+To run the container, run the following command:
 ```bash
-docker run -d 
--- name crispr_ko_screening
--p 8787:8787
--e PASSWORD=YOURPASSWORD
-crispr_ko_screening
+docker run -d --name crispr_ko_screening -p 8787:8787 -e PASSWORD=YOURPASSWORD crispr_ko_screening
 ```
 
 #### 🔐 To log in to RStudio
 **Username:** rstudio (default)
 
 #### 🧭 To run the code
-Change the workiing directory using:
+Change the working directory using:
 ```bash
-Import os
-os.chdir("/home/rstudio/projekt/src")
+import os
+os.chdir("/home/rstudio/projekt")
 ```
 
 ## ⚙️ Usage
