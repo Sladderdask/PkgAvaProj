@@ -65,9 +65,25 @@ import os
 os.chdir("/home/rstudio/projekt")
 ```
 
+## 📁 Data files
+Download the required files and save to a folder named **Data** in the PkgAvaProj project. Download the files at the following URLs:
+
+sgRNA_data.xlsx
+
+    https://orcs.thebiogrid.org/downloads/b5c747cfbc858b7564e95de50864ad95/b5c747cfbc858b7564e95de50864ad95.zip
+Library_A.csv
+
+    https://media.addgene.org/cms/filer_public/a4/b8/a4b8d181-c489-4dd7-823a-fe267fd7b277/human_geckov2_library_a_09mar2015.csv
+Library_B.csv
+
+    https://media.addgene.org/cms/filer_public/2d/8b/2d8baa42-f5c8-4b63-9c6c-bd98f333b29e/human_geckov2_library_b_09mar2015.csv
+RNA_seq_data.gz
+
+    https://ftp.ncbi.nlm.nih.gov/geo/series/GSE169nnn/GSE169614/suppl/GSE169614%5F52677%5Fstar.Homo%5Fsapiens.GRCh38.78.htseq.counts.tab.gz
+
 ## ⚙️ Usage
 To run the code, follow the steps
-1. Download the required files (see 📁 **Data files** below)
+1. Download the required files (see 📁 **Data files** above)
 2. Create the SQLite database
 ```bash
 python src/DatabasLite.py
@@ -83,22 +99,11 @@ Rscript src/Machine_learning.R
 5. Visualize the results???
 INSERT INFOR
 
-## 📁 Data files
-Download the used files and save to a data folder in the PkgAvaProj project. Download the files at the following URLs:
-
-sgRNA_data.xlsx
-
-    https://orcs.thebiogrid.org/downloads/b5c747cfbc858b7564e95de50864ad95/b5c747cfbc858b7564e95de50864ad95.zip
-Library_A.csv
-
-    https://media.addgene.org/cms/filer_public/a4/b8/a4b8d181-c489-4dd7-823a-fe267fd7b277/human_geckov2_library_a_09mar2015.csv
-Library_B.csv
-
-    https://media.addgene.org/cms/filer_public/2d/8b/2d8baa42-f5c8-4b63-9c6c-bd98f333b29e/human_geckov2_library_b_09mar2015.csv
-RNA_seq_data.gz
-
-    https://ftp.ncbi.nlm.nih.gov/geo/series/GSE169nnn/GSE169614/suppl/GSE169614%5F52677%5Fstar.Homo%5Fsapiens.GRCh38.78.htseq.counts.tab.gz
-
+## 🏠 pkgdown site
+For visualization of the AdvancedBioinformaticPackage run the following command in the rott drectory:
+```bash
+pkgdown::build_site()
+```
 
 ## 📝 License
 This package is licensed under the MIT License. 
