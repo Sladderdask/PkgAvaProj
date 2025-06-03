@@ -81,25 +81,34 @@ RNA_seq_data.gz
     https://ftp.ncbi.nlm.nih.gov/geo/series/GSE169nnn/GSE169614/suppl/GSE169614%5F52677%5Fstar.Homo%5Fsapiens.GRCh38.78.htseq.counts.tab.gz
 
 ## ⚙️ Usage
-To run the code, follow the steps
-1. Download the required files (see 📁 **Data files** above)
-2. Create the SQLite database
+To **run** the code, follow the steps
+1. **Download** the required files (see 📁 **Data files** above)
+2. To **Create** the SQLite database:
 ```bash
-python src/DatabasLite.py
+python source_code/DatabasLite.py
 ```
-3. Format the data and add to the database
+3. To **format** the data and **add** to the database:
 ```bash
-Rscript src/Data_formatting.R
+Rscript source_code/Data_formatting.R
 ```
-4. Run the Machiner learning code
+4. Run the M**achiner learning** code either in python or R:
 ```bash
-Rscript src/Machine_learning.R
+Rscript source_code/Machine_learning.R
+Python source_code/Machine_learning.py
 ```
-5. Visualize the results???
-INSERT INFOR
+5. To **plot** the results:
+```bash
+Python source_code Shapping.py
+```
+6. To **visualize** the results run the following command in the root directory:
+```bash
+Rscript shiny/app.R
+```
+**Open** the given wedadress
+
 
 ## 🏠 pkgdown site
-For visualization of the AdvancedBioinformaticPackage run the following command in the rott drectory:
+For visualization of the AdvancedBioinformaticPackage run the following command in the rot drectory:
 ```bash
 pkgdown::build_site()
 ```
