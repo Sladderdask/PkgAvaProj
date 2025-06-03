@@ -49,13 +49,13 @@ CREATE TABLE RNA_seq(
 """
 
 try:
-    os.remove("src/DatabasLite.db")
+    os.remove("source_code/DatabasLite.db")
 except FileNotFoundError:
     pass
 except OSError as e:
   print(f"An error occured: {e}")
 
-connection = sqlite3.connect("src/DatabasLite.db")
+connection = sqlite3.connect("source_code/DatabasLite.db")
 
 def define_db():
     cursor = connection.cursor()
