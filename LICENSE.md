@@ -1,9 +1,9 @@
 # Main Project License
-YEAR: 2025
+**YEAR:** 2025
 
-COPYRIGHT HOLDER: Dennis Harding
+**COPYRIGHT HOLDER:** Dennis Harding
 
-MIT License
+**MIT License**
 
 Copyright (c) 2025 Sladderdask
 
