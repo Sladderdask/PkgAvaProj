@@ -1,8 +1,9 @@
 # Main Project License
+YEAR: 2025
+COPYRIGHT HOLDER: Dennis Harding
+MIT License
 
-## MIT License
-
-Copyright (c) 2025 Dennis Harding
+Copyright (c) 2025 Sladderdask
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +22,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
 
 ## Acknowledgments
 This project includes or depends on the following **Python packages**:
