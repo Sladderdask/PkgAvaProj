@@ -22,7 +22,7 @@ gecko_df <- rename(gecko_df, Sequence = seq)
 sgRNA_data <- rename(sgRNA_data, sgRNAid = sgrna, gene_name = Gene)
 
 # Connect to database
-conn <- dbConnect(SQLite(), dbname = "src/DatabasLite.db")
+conn <- dbConnect(SQLite(), dbname = "source_code/DatabasLite.db")
 # Verify database
 dbListFields(conn, "sgRNA_data")
 dbListFields(conn, "GeCKO")
