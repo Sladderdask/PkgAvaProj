@@ -1,11 +1,6 @@
-# Main Project License
-**YEAR:** 2025
+# MIT License
 
-**COPYRIGHT HOLDER:** Dennis Harding
-
-**MIT License**
-
-Copyright (c) 2025 Sladderdask
+Copyright (c) 2025 Dennis Harding
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
