@@ -11,7 +11,7 @@ install.packages(c("RSQLite", "DBI", "glue"))
 install.packages(c("shiny", "ggplot2"))
 
 # Data formatting
-install.packages(c("readxl", "readr", "seqinr", "dplyr", "stringr"))
+install.packages(c("readxl", "readr", "dplyr", "stringr"))
 
 # RNA seq
 install.packages("BiocManager")
