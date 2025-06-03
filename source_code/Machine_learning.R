@@ -18,7 +18,7 @@ import shap
 
 
 # Connect to database
-conn <- dbConnect(SQLite(), dbname = "src/DatabasLite.db")
+conn <- dbConnect(SQLite(), dbname = "source_code/DatabasLite.db")
 
 # Importera data from database and divide up in X and y
 y <- dbGetQuery(conn, "SELECT LFC
@@ -37,7 +37,7 @@ X <- dbGetQuery(conn, "SELECT nt1, nt2, nt3, nt4, nt5, nt6, nt7, nt8, nt9, nt10,
 # Disconnect from database
 dbDisconnect(conn)
 
-# Reticulate data from R to python (python equivalents that is Pandas DataFrame)
+# Reticulate data from R to python (python equivalents is Pandas Data Frame)
 y <- r_to_py(y)
 X <- r_to_py(X)
 
@@ -70,7 +70,7 @@ py_run_string("print('R-squared:', metrics.r2_score(y_val, pred))")
 #####################################RandomForestClassifier##############################################
 
 # Connect to database
-conn <- dbConnect(SQLite(), dbname = "src/DatabasLite.db")
+conn <- dbConnect(SQLite(), dbname = "source_code/DatabasLite.db")
 
 # Importera data from database and divide up in X and y
 y <- dbGetQuery(conn, "SELECT LFC_binary
@@ -89,7 +89,7 @@ X <- dbGetQuery(conn, "SELECT nt1, nt2, nt3, nt4, nt5, nt6, nt7, nt8, nt9, nt10,
 # Disconnect from database
 dbDisconnect(conn)
 
-# Reticulate data from R to python (python equivalents that is Pandas DataFrame)
+# Reticulate data from R to python (python equivalents is Pandas Data Frame)
 y <- r_to_py(y)
 X <- r_to_py(X)
 
@@ -127,11 +127,10 @@ py_run_string("explainer = shap.Explainer(model_regression)")
 py_run_string("shap_values = explainer(np.array(X_val))")
 py_run_string("np.shape(shap_values.values)")
 
+# Save to a pickle file for visualization
+py_run_string("with open('shap_values.pickle', 'wb') as handle:
+    pickle.dump(shap_values, handle, protocol=pickle.HIGHEST_PROTOCOL)")
 
-
-# shap.plot.summary -> Snygg plott
-
-#shap.plots.waterfall(shap_values[0])
 
 
 
