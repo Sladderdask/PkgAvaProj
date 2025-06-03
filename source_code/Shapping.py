@@ -1,8 +1,11 @@
 import pickle
 import shap
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
 
 # Load the SHAP object from the pickle file
-with open("src/shap_values.pickle", "rb") as f:
+with open("source_code/shap_values.pickle", "rb") as f:
     shap_values = pickle.load(f)
 print(shap_values)
 
