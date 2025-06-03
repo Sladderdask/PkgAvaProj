@@ -1,0 +1,4 @@
+The MIT License is a permissive software license and is thus free to use with limited restrictions regardin modifications and redistribution. 
+The MIT License is a popular license which permits a person the sell copies of the software.
+We choose the MIT License beacuse it offers maximum freedom for the next person trying to solve the CRISPR-KO-expression question of how a guid RNA should be constructed for effective knockouts.
+Other contributors will be able to continue with this project without restrictions, only including a copy of the MIT License and proper attribution. 

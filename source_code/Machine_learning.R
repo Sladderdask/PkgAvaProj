@@ -28,7 +28,7 @@ y <- dbGetQuery(conn, "SELECT LFC
                        WHERE fpkm_binary = 1
                        ")
 
-X <- dbGetQuery(conn, "SELECT nt1, nt2, nt3, nt4, nt5, nt6, nt7, nt8, nt9, nt10, nt11, nt12, nt13, nt14, nt15, nt16 ,nt17 ,nt18 nt19, nt20, gc_content
+X <- dbGetQuery(conn, "SELECT nt1, nt2, nt3, nt4, nt5, nt6, nt7, nt8, nt9, nt10, nt11, nt12, nt13, nt14, nt15, nt16 ,nt17 ,nt18, nt19, nt20, gc_content
                        FROM GeCKO
                        INNER JOIN sgRNA_data ON sgRNA_data.sgRNAid = GeCKO.UID
                        INNER JOIN RNA_seq ON RNA_seq.gene_name = sgRNA_data.gene_name
@@ -80,7 +80,7 @@ y <- dbGetQuery(conn, "SELECT LFC_binary
                        WHERE fpkm_binary = 1
                        ")
 
-X <- dbGetQuery(conn, "SELECT nt1, nt2, nt3, nt4, nt5, nt6, nt7, nt8, nt9, nt10, nt11, nt12, nt13, nt14, nt15, nt16 ,nt17 ,nt18 nt19, nt20, gc_content
+X <- dbGetQuery(conn, "SELECT nt1, nt2, nt3, nt4, nt5, nt6, nt7, nt8, nt9, nt10, nt11, nt12, nt13, nt14, nt15, nt16 ,nt17 ,nt18, nt19, nt20, gc_content
                        FROM GeCKO
                        INNER JOIN sgRNA_data ON sgRNA_data.sgRNAid = GeCKO.UID
                        INNER JOIN RNA_seq ON RNA_seq.gene_name = sgRNA_data.gene_name
