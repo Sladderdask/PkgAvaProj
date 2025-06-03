@@ -12,7 +12,7 @@ import shap
 
 
 # Importera datan från databasen och dela upp i x och y.
-connect = sqlite3.connect("src/DatabasLite.db")
+connect = sqlite3.connect("source_code/DatabasLite.db")
 
 cursor = connect.cursor()
 
@@ -75,7 +75,7 @@ print('R-squared:', metrics.r2_score(y_val, pred))
 
 
 # Importera datan från databasen och dela upp i x och y.
-connect = sqlite3.connect("src/DatabasLite.db")
+connect = sqlite3.connect("source_code/DatabasLite.db")
 
 cursor = connect.cursor()
 
@@ -133,21 +133,6 @@ print('Confusion:', metrics.confusion_matrix(y_val, pred))
 
 
 
-
-
-
-#####################################Neural network############################################
-#from tensorflow.keras.models import Sequential
-#from tensorflow.keras.layers import SimpleRNN, Dense
-
-#model = Sequential()
-#model.add(SimpleRNN(units=50, activation='tanh', input_shape=(20, 4)))
-#model.add(Dense(1, activation='sigmoid'))  # Binary classification
-
-#model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-#model.summary()
-
-
 ####### Plots #######
 
 
@@ -169,15 +154,10 @@ plt.show()
 explainer = shap.TreeExplainer(model_regression)
 shap_values = explainer(np.array(X_val))
 
-with open("shap_values2.pickle", "wb") as handle:
+# Save to a pickle file for visualization
+with open("shap_values.pickle", "wb") as handle:
     pickle.dump(shap_values, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-
-
-
-# shap.plot.summary -> Snygg plott
-
-#shap.plots.waterfall(shap_values[0])
 
 
 
