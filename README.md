@@ -98,7 +98,7 @@ Python source_code/Machine_learning.py
 ```
 5. To **plot** the results:
 ```bash
-Python source_code Shapping.py
+Python source_code/Shapping.py
 ```
 6. To **visualize** the results run the following command in the root directory:
 ```bash
