@@ -10,7 +10,7 @@ WORKDIR /home/rstudio/projekt
 # Copy R and Python dependency files into the container
 COPY requirements.txt ./
 COPY requirements.R ./
-COPY ./src ./src
+COPY ./source_code ./source_code
 COPY ./shiny ./shiny
 
 # Install Python packages
