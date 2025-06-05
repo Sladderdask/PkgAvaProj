@@ -116,7 +116,7 @@ Rscript shiny/app.R
 
 
 ## 🏠 pkgdown site
-For visualization of the AdvancedBioinformaticPackage run the following command in the rot drectory:
+For visualization of the AdvancedBioinformaticPackage run the following command in the root drectory:
 ```bash
 pkgdown::build_site()
 ```
