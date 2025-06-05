@@ -117,9 +117,7 @@ Rscript shiny/app.R
 
 ## 🏠 pkgdown site
 For visualization of the AdvancedBioinformaticPackage run the following command in the root drectory:
-```bash
-pkgdown::preview_site()
-```
+Enter URL in browser: https://sladderdask.github.io/PkgAvaProj/
 
 ## 📝 License
 This package is licensed under the MIT License. 
