@@ -51,88 +51,123 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="package-avanceradbioinformatikpackage">📦 AvanceradBioinformatikPackage<a class="anchor" aria-label="anchor" href="#package-avanceradbioinformatikpackage"></a>
+<div class="page-header"><h1 id="package-advancedbioinformaticpackage">📦 AdvancedBioinformaticPackage<a class="anchor" aria-label="anchor" href="#package-advancedbioinformaticpackage"></a>
 </h1></div>
-<p><strong>AvanceradBioinformatikPackage</strong> provides tools and workflows for data preprocessing and analysis as part of the <em>Advanced Bioinformatics</em> course at Umeå University. The main purpose if this package is on identifying optimal spacer sequences for gene knockout using CRISPR-Cas9.</p>
+<p><strong>AdvancedBioinformaticPackage</strong> provides tools and workflows for data preprocessing and analysis as part of the <em>Advanced Bioinformatics</em> course at Umeå University. The main purpose if this package is on identifying optimal spacer sequences for gene knockout using CRISPR-Cas9.</p>
+<div class="section level2">
+<h2 id="rocket-installation-and-example-usage">🚀 Installation and example usage<a class="anchor" aria-label="anchor" href="#rocket-installation-and-example-usage"></a>
+</h2>
+<p>To get started: 1. Copy the URL from the repository. 2. Open a terminal and navigate to a directory of choice and run:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">git</span> clone URL</span></code></pre></div>
 <div class="section level3">
-<h3 id="rocket-installation-and-example-usage">🚀 Installation and example usage<a class="anchor" aria-label="anchor" href="#rocket-installation-and-example-usage"></a>
+<h3 id="computer-local-installation">💻 Local installation<a class="anchor" aria-label="anchor" href="#computer-local-installation"></a>
 </h3>
+<p>Install the packages using the following commands:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">Rscript</span> requirements.R</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="ex">pip</span> install <span class="at">-r</span> requirements.txt</span></code></pre></div>
 <p>To install the development version of the package from GitHub:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># If not already installed devtools, run:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span> </span>
 <span></span>
 <span><span class="co"># Install the package</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"Sladderdask/AvanceradBioinformatikPackage"</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="local-installation">Local installation<a class="anchor" aria-label="anchor" href="#local-installation"></a>
-</h3>
-<p>Install the packages using</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>Rscript requirements.R</span>
-<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>pip install <span class="sc">-</span>r requirements.txt</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"Sladderdask/AdvancedBioinformaticPackage"</span><span class="op">)</span></span></code></pre></div>
+<div class="section level4">
+<h4 id="test_tube-example-code">🧪 Example code<a class="anchor" aria-label="anchor" href="#test_tube-example-code"></a>
+</h4>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#example usage</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">AvanceradbioinformatikPackage</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">fun</span><span class="op">(</span><span class="fl">5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></code></pre></div>
 </div>
+</div>
 <div class="section level3">
-<h3 id="docker">Docker<a class="anchor" aria-label="anchor" href="#docker"></a>
+<h3 id="whale-docker">🐳 Docker<a class="anchor" aria-label="anchor" href="#whale-docker"></a>
 </h3>
 <p>The program can be containerized using Docker to easily use the code despite different locally versions of programs. A Dockerfile can be found in the downloaded repository.</p>
 <div class="section level4">
-<h4 id="build-docker-image">Build Docker image<a class="anchor" aria-label="anchor" href="#build-docker-image"></a>
+<h4 id="building_construction-build-docker-image">🏗️ Build Docker image<a class="anchor" aria-label="anchor" href="#building_construction-build-docker-image"></a>
 </h4>
-<p>To build the Docker image, run the following command in the project root directory</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> CRISPR_KO_screening .</span></code></pre></div>
+<p>To build the Docker image, run the following command in the project root directory:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> crispr_ko_screening .</span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="run-the-container">Run the container<a class="anchor" aria-label="anchor" href="#run-the-container"></a>
+<h4 id="arrow_forward-run-the-container">▶️ Run the container<a class="anchor" aria-label="anchor" href="#arrow_forward-run-the-container"></a>
 </h4>
-<p>To run the container, run the following commands</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> </span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="ex">--</span> name CRISPR_KO_screening</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="ex">-p</span> 8787:8787</span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="ex">-e</span> PASSWORD=YOURPASSWORD</span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="ex">CRISPR_KO_screening</span></span></code></pre></div>
+<p>To run the container, run the following command:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-d</span> <span class="at">--name</span> crispr_ko_screening <span class="at">-p</span> 8787:8787 <span class="at">-e</span> PASSWORD=YOURPASSWORD crispr_ko_screening</span></code></pre></div>
 </div>
 <div class="section level4">
-<h4 id="to-log-in-to-rstudio">To log in to RStudio<a class="anchor" aria-label="anchor" href="#to-log-in-to-rstudio"></a>
+<h4 id="closed_lock_with_key-to-log-in-to-rstudio">🔐 To log in to RStudio<a class="anchor" aria-label="anchor" href="#closed_lock_with_key-to-log-in-to-rstudio"></a>
 </h4>
-<p>username -&gt; Default set to rstudio</p>
+<p><strong>Username:</strong> rstudio (default)</p>
 </div>
 <div class="section level4">
-<h4 id="to-run-the-code">To run the code<a class="anchor" aria-label="anchor" href="#to-run-the-code"></a>
+<h4 id="compass-to-run-the-code">🧭 To run the code<a class="anchor" aria-label="anchor" href="#compass-to-run-the-code"></a>
 </h4>
-<p>Change the workiing directory using:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">Import</span> os</span>
-<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="ex">os.chdir</span><span class="er">(</span><span class="st">"/home/rstudio/projekt/src"</span><span class="kw">)</span></span></code></pre></div>
+<p>Change the working directory using:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="ex">setwd</span><span class="er">(</span><span class="st">"/home/rstudio/projekt"</span><span class="kw">)</span></span></code></pre></div>
 </div>
 </div>
-<div class="section level3">
-<h3 id="license">License<a class="anchor" aria-label="anchor" href="#license"></a>
-</h3>
-<p>This package is licensed under the MIT License.</p>
-<p>See the LICENSE file for details.</p>
 </div>
-<div class="section level3">
-<h3 id="authors">Authors<a class="anchor" aria-label="anchor" href="#authors"></a>
-</h3>
+<div class="section level2">
+<h2 id="file_folder-data-files">📁 Data files<a class="anchor" aria-label="anchor" href="#file_folder-data-files"></a>
+</h2>
+<p>Download the required files and save to a folder named <strong>Data</strong> in the PkgAvaProj project. Download the files at the following URLs:</p>
+<p>sgRNA_data.xlsx</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>https<span class="sc">:</span><span class="er">//</span>orcs.thebiogrid.org<span class="sc">/</span>downloads<span class="sc">/</span>b5c747cfbc858b7564e95de50864ad95<span class="sc">/</span>b5c747cfbc858b7564e95de50864ad95.zip</span></code></pre></div>
+<p>Library_A.csv</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>https<span class="sc">:</span><span class="er">//</span>media.addgene.org<span class="sc">/</span>cms<span class="sc">/</span>filer_public<span class="sc">/</span>a4<span class="sc">/</span>b8<span class="sc">/</span>a4b8d181<span class="sc">-</span>c489<span class="dv">-4</span>dd7<span class="dv">-823</span>a<span class="sc">-</span>fe267fd7b277<span class="sc">/</span>human_geckov2_library_a_09mar2015.csv</span></code></pre></div>
+<p>Library_B.csv</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>https<span class="sc">:</span><span class="er">//</span>media.addgene.org<span class="sc">/</span>cms<span class="sc">/</span>filer_public<span class="sc">/</span><span class="dv">2</span>d<span class="sc">/</span><span class="dv">8</span>b<span class="sc">/</span><span class="dv">2</span>d8baa42<span class="sc">-</span>f5c8<span class="dv">-4</span>b63<span class="dv">-9</span>c6c<span class="sc">-</span>bd98f333b29e<span class="sc">/</span>human_geckov2_library_b_09mar2015.csv</span></code></pre></div>
+<p>RNA_seq_data.gz</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>https<span class="sc">:</span><span class="er">//</span>ftp.ncbi.nlm.nih.gov<span class="sc">/</span>geo<span class="sc">/</span>series<span class="sc">/</span>GSE169nnn<span class="sc">/</span>GSE169614<span class="sc">/</span>suppl<span class="sc">/</span>GSE169614<span class="sc">%5F52677%</span><span class="dv">5</span>Fstar.Homo%<span class="dv">5</span>Fsapiens.GRCh38.<span class="fl">78.</span>htseq.counts.tab.gz</span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="gear-usage">⚙️ Usage<a class="anchor" aria-label="anchor" href="#gear-usage"></a>
+</h2>
+<p>To run the code, follow the steps 1. Download the required files (see 📁 <strong>Data files</strong> above) 2. Create the SQLite database</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="ex">python</span> src/DatabasLite.py</span></code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>Format the data and add to the database</li>
+</ol>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="ex">Rscript</span> src/Data_formatting.R</span></code></pre></div>
+<ol start="4" style="list-style-type: decimal">
+<li>Run the Machiner learning code</li>
+</ol>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="ex">Rscript</span> src/Machine_learning.R</span></code></pre></div>
+<ol start="5" style="list-style-type: decimal">
+<li>Visualize the results??? INSERT INFOR</li>
+</ol>
+</div>
+<div class="section level2">
+<h2 id="house-pkgdown-site">🏠 pkgdown site<a class="anchor" aria-label="anchor" href="#house-pkgdown-site"></a>
+</h2>
+<p>For visualization of the AdvancedBioinformaticPackage run the following command in the rott drectory:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">pkgdown::build_site()</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="pencil-license">📝 License<a class="anchor" aria-label="anchor" href="#pencil-license"></a>
+</h2>
+<p>This package is licensed under the MIT License. See the LICENSE file for details.</p>
+</div>
+<div class="section level2">
+<h2 id="busts_in_silhouette-authors">👥 Authors<a class="anchor" aria-label="anchor" href="#busts_in_silhouette-authors"></a>
+</h2>
 <p>Dennis Harding – <a href="mailto:dennis.harding2@gmail.com" class="email">dennis.harding2@gmail.com</a></p>
 <p>Moa Ögren – <a href="mailto:moaa.ogren@gmail.com" class="email">moaa.ogren@gmail.com</a></p>
 </div>
-<div class="section level3">
-<h3 id="course">Course<a class="anchor" aria-label="anchor" href="#course"></a>
-</h3>
-<p>This package was developed for the Advanced Bioinformatics course at Umeå University.</p>
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD ### Data files If one wants to check the data used in the project, one can dowload the files at the following URLs:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>https<span class="sc">:</span><span class="er">//</span>orcs.thebiogrid.org<span class="sc">/</span>downloads<span class="sc">/</span>b5c747cfbc858b7564e95de50864ad95<span class="sc">/</span>b5c747cfbc858b7564e95de50864ad95.zip</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>https<span class="sc">:</span><span class="er">//</span>media.addgene.org<span class="sc">/</span>cms<span class="sc">/</span>filer_public<span class="sc">/</span>a4<span class="sc">/</span>b8<span class="sc">/</span>a4b8d181<span class="sc">-</span>c489<span class="dv">-4</span>dd7<span class="dv">-823</span>a<span class="sc">-</span>fe267fd7b277<span class="sc">/</span>human_geckov2_library_a_09mar2015.csv</span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>https<span class="sc">:</span><span class="er">//</span>media.addgene.org<span class="sc">/</span>cms<span class="sc">/</span>filer_public<span class="sc">/</span><span class="dv">2</span>d<span class="sc">/</span><span class="dv">8</span>b<span class="sc">/</span><span class="dv">2</span>d8baa42<span class="sc">-</span>f5c8<span class="dv">-4</span>b63<span class="dv">-9</span>c6c<span class="sc">-</span>bd98f333b29e<span class="sc">/</span>human_geckov2_library_b_09mar2015.csv</span></code></pre></div>
-<p>======= &gt;&gt;&gt;&gt;&gt;&gt;&gt; main ### Contributing</p>
-<p>We DO welcome contributions.</p>
+<div class="section level2">
+<h2 id="mortar_board-course">🎓 Course<a class="anchor" aria-label="anchor" href="#mortar_board-course"></a>
+</h2>
+<p>This package was developed for the <strong>Advanced Bioinformatics</strong> course at Umeå University.</p>
+</div>
+<div class="section level2">
+<h2 id="handshake-contributing">🤝 Contributing<a class="anchor" aria-label="anchor" href="#handshake-contributing"></a>
+</h2>
+<p>We <strong>DO</strong> welcome contributions.</p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">
