@@ -8,7 +8,7 @@ library(ggplot2)
 addResourcePath("imgs", "shiny/www")  # maps /imgs to the www folder
 
 # Connect to the database
-conn <- dbConnect(SQLite(), "src/DatabasLite.db")
+conn <- dbConnect(SQLite(), "source_code/DatabasLite.db")
 
 ui <- fluidPage(
   titlePanel("Avancerad Bioinformatik Web"),
