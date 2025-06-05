@@ -197,7 +197,7 @@ updatedb <- new("Dataformation_Insertion_Db",
                 db = conn,
                 datatable = "sgRNA_data",
                 set_command = "LFC_binary = 1",
-                where_command = "ABS(LFC) > 1")
+                where_command = "ABS(LFC) > 0.6")
 # Call on the method for updating the database
 update_db(updatedb)
 
@@ -205,7 +205,7 @@ updatedb <- new("Dataformation_Insertion_Db",
                 db = conn,
                 datatable = "sgRNA_data",
                 set_command = "LFC_binary = 0",
-                where_command = "ABS(LFC) = 1 OR ABS(LFC) < 1")
+                where_command = "ABS(LFC) <= 0.6")
 
 update_db(updatedb)
 
