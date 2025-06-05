@@ -20,7 +20,7 @@ import shap
 # Connect to database
 conn <- dbConnect(SQLite(), dbname = "source_code/DatabasLite.db")
 
-# Importera data from database and divide up in X and y
+# Import data from database and divide up in X and y
 y <- dbGetQuery(conn, "SELECT LFC
                        FROM GeCKO
                        INNER JOIN sgRNA_data ON sgRNA_data.sgRNAid = GeCKO.UID
@@ -72,7 +72,7 @@ py_run_string("print('R-squared:', metrics.r2_score(y_val, pred))")
 # Connect to database
 conn <- dbConnect(SQLite(), dbname = "source_code/DatabasLite.db")
 
-# Importera data from database and divide up in X and y
+# Import data from database and divide up in X and y
 y <- dbGetQuery(conn, "SELECT LFC_binary
                        FROM GeCKO
                        INNER JOIN sgRNA_data ON sgRNA_data.sgRNAid = GeCKO.UID

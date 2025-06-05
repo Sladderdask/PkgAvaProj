@@ -15,6 +15,5 @@ install.packages(c("readxl", "readr", "dplyr", "stringr"))
 
 # RNA seq
 install.packages("BiocManager")
-# For translating gene id to gene name ???   
 BiocManager::install("biomaRt")
 
