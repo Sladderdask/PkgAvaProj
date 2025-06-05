@@ -81,7 +81,13 @@ RNA_seq_data.gz
     https://ftp.ncbi.nlm.nih.gov/geo/series/GSE169nnn/GSE169614/suppl/GSE169614%5F52677%5Fstar.Homo%5Fsapiens.GRCh38.78.htseq.counts.tab.gz
 
 ## ⚙️ Usage
-To **run** the code, follow the steps
+To **visualize** the results run the following command in the root directory:
+```bash
+Rscript shiny/app.R
+```
+**Open** the given wedadress
+
+To **run** the code from scratch, follow the steps:
 1. **Download** the required files (see 📁 **Data files** above)
 2. To **Create** the SQLite database:
 ```bash
@@ -91,15 +97,17 @@ python source_code/DatabasLite.py
 ```bash
 Rscript source_code/Data_formatting.R
 ```
-4. Run the M**achiner learning** code either in python or R:
+4. Run the **Machiner learning** code either in python or R:
 ```bash
 Rscript source_code/Machine_learning.R
 Python source_code/Machine_learning.py
 ```
 5. To **plot** the results:
 ```bash
-Python source_code/Shapping.py
+python source_code/Shapping.py
 ```
+**Save** the plots to the www folde in shiny/www path
+
 6. To **visualize** the results run the following command in the root directory:
 ```bash
 Rscript shiny/app.R
